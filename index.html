@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CHARLY STREAM — Anime & Doramas en Español</title>
+  <meta name="description" content="Mira anime y doramas chinos con audio en español. Charly Stream — tu plataforma de streaming en Bolivia.">
+  <meta name="theme-color" content="#e50914">
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" href="icons/icon-192.png">
+  <link rel="apple-touch-icon" href="icons/icon-192.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<!-- ══════════════════════════════
+     PAGE 1: LOGIN
+══════════════════════════════ -->
+<div id="page-login" class="page active">
+  <div class="login-bg-particles" id="particles"></div>
+  <div class="login-box">
+    <div class="login-logo">
+      <span class="logo-icon">🎌</span>
+    </div>
+    <h1 class="login-title">CHARLY STREAM</h1>
+    <p class="login-subtitle">Anime &amp; Doramas en Español 🇧🇴</p>
+
+    <div class="login-features">
+      <span class="feat-badge">🎬 Anime</span>
+      <span class="feat-badge">🏯 Doramas Chinos</span>
+      <span class="feat-badge">🎤 Audio Latino</span>
+    </div>
+
+    <div class="login-form">
+      <label class="form-label" for="input-codigo">Ingresa tu código de acceso</label>
+      <div class="form-input-wrap">
+        <input
+          id="input-codigo"
+          class="form-input"
+          type="text"
+          placeholder="Ej: CHARLY001"
+          maxlength="20"
+          autocomplete="off"
+          autocapitalize="characters"
+        >
+        <span class="form-input-icon">🔑</span>
+      </div>
+      <p class="form-error" id="form-error">❌ Código incorrecto o expirado. Contacta a Charly.</p>
+      <button class="btn-primary" id="btn-ingresar" onclick="ingresarConCodigo()">
+        <span>▶ ENTRAR A CHARLY STREAM</span>
+      </button>
+
+      <div class="divider">o</div>
+
+      <button class="btn-trial" id="btn-prueba" onclick="mostrarPrueba()">
+        🎁 Quiero mis 7 Días GRATIS
+      </button>
+    </div>
+
+    <div class="login-footer">
+      <p>¿Ya tienes acceso? ¿Quieres renovar por <strong>5 Bs</strong>?</p>
+      <a id="btn-wa-login" href="https://wa.me/59165657865?text=Hola%20Charly%2C%20quiero%20acceso%20a%20Charly%20Stream%20%F0%9F%8E%8C" class="btn-wa" target="_blank">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.625.846 5.059 2.284 7.034L.789 23.492a.5.5 0 00.612.638l4.769-1.416A11.94 11.94 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-2.239 0-4.308-.724-5.993-1.953l-.42-.305-2.834.841.89-2.722-.334-.444A9.96 9.96 0 012 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/></svg>
+        Contactar a Charly (WhatsApp)
+      </a>
+    </div>
+    <p style="margin-top:20px;font-size:0.7rem;color:var(--text3);">v1.0 Beta • Hecho con ❤️ en Bolivia 🇧🇴</p>
+  </div>
+</div>
+
+<!-- ══════════════════════════════
+     PAGE 2: CATÁLOGO
+══════════════════════════════ -->
+<div id="page-catalog" class="page">
+
+  <!-- Navbar -->
+  <nav class="navbar">
+    <a href="#" class="nav-logo" onclick="irACatalogo()">
+      <span class="nav-logo-icon">🎌</span>
+      <span class="nav-logo-text">CHARLY STREAM</span>
+    </a>
+    <div class="nav-search">
+      <span class="nav-search-icon">🔍</span>
+      <input id="search-input" type="text" placeholder="Buscar anime, dorama..." oninput="buscar(this.value)">
+    </div>
+    <div class="nav-actions">
+      <span id="nav-dias" class="nav-btn" style="pointer-events:none;"></span>
+      <button class="nav-btn-exit" onclick="cerrarSesion()">Salir</button>
+      <div class="nav-avatar">👤</div>
+    </div>
+  </nav>
+
+  <!-- Hero Banner -->
+  <div class="hero-banner" id="hero-banner">
+    <img id="hero-img" class="hero-img" src="" alt="Destacado">
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <div class="hero-badge">🔥 DESTACADO</div>
+      <h1 class="hero-title" id="hero-title"></h1>
+      <div class="hero-meta">
+        <span class="hero-rating" id="hero-rating"></span>
+        <span id="hero-year"></span>
+        <span id="hero-audio"></span>
+        <span id="hero-status"></span>
+      </div>
+      <p class="hero-desc" id="hero-desc"></p>
+      <div class="hero-btns">
+        <button class="btn-play" id="hero-play" onclick="reproducirDestacado()">
+          ▶ Ver Ahora
+        </button>
+        <button class="btn-info" id="hero-info" onclick="verInfo()">
+          ℹ️ Más Info
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Filtros -->
+  <div class="filters-bar">
+    <button class="filter-btn active" onclick="filtrar('todo',this)">Todo</button>
+    <button class="filter-btn" onclick="filtrar('anime',this)">🎌 Anime</button>
+    <button class="filter-btn" onclick="filtrar('dorama',this)">🏯 Doramas</button>
+    <button class="filter-btn" onclick="filtrar('pelicula',this)">🎬 Películas</button>
+    <button class="filter-btn" onclick="filtrar('latino',this)">🎤 Audio Latino</button>
+    <button class="filter-btn" onclick="filtrar('subs',this)">💬 Subtítulos</button>
+  </div>
+
+  <!-- Contenido Principal -->
+  <main class="catalog-main">
+
+    <!-- Resultados de búsqueda -->
+    <div class="search-results" id="search-results" style="display:none;">
+      <p class="search-results-title">Resultados para: <span id="search-term"></span></p>
+      <div class="cards-grid" id="search-grid"></div>
+    </div>
+
+    <!-- Continuar Viendo -->
+    <div class="section-row" id="section-continuar" style="display:none;">
+      <div class="section-row-header">
+        <span class="section-row-title">▶ Continuar Viendo</span>
+      </div>
+      <div class="cards-row" id="grid-continuar"></div>
+    </div>
+
+    <!-- Anime -->
+    <div class="section-row" id="section-anime">
+      <div class="section-row-header">
+        <span class="section-row-title">🎌 Anime Explosivo</span>
+        <a href="#" class="section-see-all" onclick="filtrar('anime')">Ver todo →</a>
+      </div>
+      <div class="cards-row" id="grid-anime"></div>
+    </div>
+
+    <!-- Doramas -->
+    <div class="section-row" id="section-doramas">
+      <div class="section-row-header">
+        <span class="section-row-title">🏯 Doramas Chinos</span>
+        <a href="#" class="section-see-all" onclick="filtrar('dorama')">Ver todo →</a>
+      </div>
+      <div class="cards-row" id="grid-doramas"></div>
+    </div>
+
+    <!-- Películas -->
+    <div class="section-row" id="section-peliculas">
+      <div class="section-row-header">
+        <span class="section-row-title">🎬 Películas</span>
+        <a href="#" class="section-see-all" onclick="filtrar('pelicula')">Ver todo →</a>
+      </div>
+      <div class="cards-row" id="grid-peliculas"></div>
+    </div>
+
+  </main>
+</div>
+
+<!-- ══════════════════════════════
+     PAGE 3: REPRODUCTOR
+══════════════════════════════ -->
+<div id="page-player" class="page">
+
+  <nav class="navbar">
+    <a href="#" class="nav-logo" onclick="irACatalogo()">
+      <span class="nav-logo-icon">🎌</span>
+      <span class="nav-logo-text">CHARLY STREAM</span>
+    </a>
+    <div class="nav-actions">
+      <button class="btn-back" onclick="irACatalogo()">← Volver al catálogo</button>
+    </div>
+  </nav>
+
+  <div class="player-layout">
+    <!-- Video -->
+    <div class="player-main">
+      <div class="player-video-wrap">
+        <iframe
+          id="player-iframe"
+          class="player-iframe"
+          src=""
+          allow="autoplay; fullscreen; picture-in-picture"
+          allowfullscreen
+          title="Reproductor Charly Stream"
+        ></iframe>
+      </div>
+      <div class="player-info">
+        <h2 class="player-title" id="player-show-title"></h2>
+        <p class="player-ep-info" id="player-ep-info"></p>
+        <div class="player-actions">
+          <a id="btn-download-ep" href="#" class="btn-download" target="_blank">
+            ⬇️ Descargar Episodio
+          </a>
+          <button class="btn-next-ep" id="btn-next-ep" onclick="siguienteEpisodio()">
+            Siguiente Episodio →
+          </button>
+        </div>
+        <div class="player-desc" id="player-desc"></div>
+      </div>
+    </div>
+
+    <!-- Sidebar -->
+    <div class="player-sidebar">
+      <div class="sidebar-header">📋 Episodios</div>
+      <div class="episodes-list" id="episodes-list"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════
+     MODAL: ACCESO EXPIRADO
+══════════════════════════════ -->
+<div class="modal-overlay" id="modal-expiry" style="display:none;">
+  <div class="modal-box">
+    <div class="modal-icon">⏰</div>
+    <h2 class="modal-title">¡Tu acceso expiró!</h2>
+    <p class="modal-desc">Tu prueba de 7 días ha terminado.<br>Renueva tu acceso por solo:</p>
+    <div class="modal-price">5 Bs / mes</div>
+    <a href="https://wa.me/59165657865?text=Hola%20Charly%2C%20quiero%20renovar%20mi%20acceso%20a%20Charly%20Stream%20%F0%9F%8E%8C%20-%205%20Bs%20Yape" class="btn-wa" target="_blank" style="display:inline-flex;margin-bottom:16px;">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.625.846 5.059 2.284 7.034L.789 23.492a.5.5 0 00.612.638l4.769-1.416A11.94 11.94 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-2.239 0-4.308-.724-5.993-1.953l-.42-.305-2.834.841.89-2.722-.334-.444A9.96 9.96 0 012 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/></svg>
+      Pagar 5 Bs por Yape / WhatsApp
+    </a>
+    <br>
+    <button onclick="cerrarSesion()" style="color:var(--text3);font-size:0.85rem;background:none;border:none;cursor:pointer;font-family:inherit;">
+      Cerrar sesión
+    </button>
+  </div>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<!-- Floating WhatsApp -->
+<a href="https://wa.me/59165657865" class="floating-wa" id="floating-wa" target="_blank" aria-label="WhatsApp Charly">
+  <svg width="28" height="28" viewBox="0 0 24 24" fill="#fff"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.625.846 5.059 2.284 7.034L.789 23.492a.5.5 0 00.612.638l4.769-1.416A11.94 11.94 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-2.239 0-4.308-.724-5.993-1.953l-.42-.305-2.834.841.89-2.722-.334-.444A9.96 9.96 0 012 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/></svg>
+  <span class="wa-pulse"></span>
+</a>
+
+<script src="datos.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

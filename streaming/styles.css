@@ -289,3 +289,25 @@ button{cursor:pointer;border:none;background:none;font-family:inherit;}
 .admin-refresh-btn{padding:9px 20px;border-radius:50px;background:var(--red);color:#fff;font-size:.82rem;font-weight:700;border:none;cursor:pointer;transition:var(--tr);}
 .admin-refresh-btn:hover{background:var(--red2);box-shadow:var(--glow);}
 
+/* SPORT / MUSIC FILTERS */
+.filter-btn-sport{border-color:rgba(34,197,94,.4);color:#22c55e;}
+.filter-btn-sport:hover,.filter-btn-sport.active{background:#22c55e;border-color:#22c55e;color:#fff;}
+.filter-btn-music{border-color:rgba(168,85,247,.4);color:#a855f7;}
+.filter-btn-music:hover,.filter-btn-music.active{background:#a855f7;border-color:#a855f7;color:#fff;}
+.card-live-badge{position:absolute;top:8px;left:8px;background:#22c55e;color:#fff;font-size:.6rem;font-weight:900;letter-spacing:1px;padding:3px 7px;border-radius:4px;animation:livePulse 1.5s infinite;}
+@keyframes livePulse{0%,100%{opacity:1;}50%{opacity:.5;}}
+
+/* MUSIC PLAYER BAR */
+.music-bar{position:fixed;bottom:0;left:0;right:0;z-index:400;background:rgba(17,17,24,.98);border-top:2px solid rgba(168,85,247,.5);backdrop-filter:blur(20px);display:flex;align-items:center;gap:14px;padding:10px 20px;box-shadow:0 -4px 30px rgba(168,85,247,.25);}
+.music-bar-thumb{width:46px;height:46px;border-radius:8px;object-fit:cover;border:2px solid rgba(168,85,247,.5);}
+.music-bar-info{flex:1;min-width:0;}
+.music-bar-title{font-size:.9rem;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.music-bar-artist{font-size:.75rem;color:var(--text3);margin-top:2px;}
+.music-bar-controls{display:flex;align-items:center;gap:6px;}
+.music-ctrl-btn{width:36px;height:36px;border-radius:50%;background:var(--bg3);border:1px solid var(--border);color:var(--text2);font-size:1rem;cursor:pointer;transition:var(--tr);display:flex;align-items:center;justify-content:center;}
+.music-ctrl-btn:hover{border-color:#a855f7;color:#a855f7;}
+.music-play-btn{background:#a855f7!important;color:#fff!important;border-color:#a855f7!important;width:42px!important;height:42px!important;font-size:1.1rem!important;}
+.music-play-btn:hover{background:#9333ea!important;box-shadow:0 0 20px rgba(168,85,247,.6)!important;}
+@media(max-width:600px){.music-bar{padding:8px 12px;gap:10px;}.music-bar-thumb{width:38px;height:38px;}}
+
+

@@ -1,45 +1,27 @@
 {
-  "name": "Charly Stream — Anime & Doramas",
+  "name": "Charly Stream",
   "short_name": "Charly Stream",
   "description": "La mejor plataforma de Anime y Doramas en Español de Bolivia",
   "start_url": "/streaming/index.html",
   "scope": "/streaming/",
   "display": "standalone",
   "orientation": "portrait-primary",
-  "theme_color": "#e50914",
+  "theme_color": "#0a0a0f",
   "background_color": "#0a0a0f",
   "lang": "es",
   "dir": "ltr",
   "categories": ["entertainment"],
   "icons": [
     {
-      "src": "https://charlystream-bo.github.io/streaming/icons/icon-72.png",
-      "sizes": "72x72",
-      "type": "image/png",
-      "purpose": "any"
-    },
-    {
-      "src": "https://charlystream-bo.github.io/streaming/icons/icon-96.png",
-      "sizes": "96x96",
-      "type": "image/png",
-      "purpose": "any"
-    },
-    {
-      "src": "https://charlystream-bo.github.io/streaming/icons/icon-128.png",
-      "sizes": "128x128",
-      "type": "image/png",
-      "purpose": "any"
-    },
-    {
-      "src": "https://charlystream-bo.github.io/streaming/icons/icon-192.png",
+      "src": "https://charlystream-bo.github.io/streaming/avatar.jpg",
       "sizes": "192x192",
-      "type": "image/png",
+      "type": "image/jpeg",
       "purpose": "any maskable"
     },
     {
-      "src": "https://charlystream-bo.github.io/streaming/icons/icon-512.png",
+      "src": "https://charlystream-bo.github.io/streaming/avatar.jpg",
       "sizes": "512x512",
-      "type": "image/png",
+      "type": "image/jpeg",
       "purpose": "any maskable"
     }
   ],

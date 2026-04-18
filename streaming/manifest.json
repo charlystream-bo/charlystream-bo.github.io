@@ -2,43 +2,67 @@
   "name": "Charly Stream — Anime & Doramas",
   "short_name": "Charly Stream",
   "description": "La mejor plataforma de Anime y Doramas en Español de Bolivia",
-  "start_url": "/streaming/?utm_source=pwa",
+  "start_url": "/streaming/index.html",
   "scope": "/streaming/",
   "display": "standalone",
   "orientation": "portrait-primary",
   "theme_color": "#e50914",
   "background_color": "#0a0a0f",
-  "lang": "es-BO",
+  "lang": "es",
   "dir": "ltr",
   "categories": ["entertainment"],
   "icons": [
-    { "src": "icons/icon-72.png",  "sizes": "72x72",   "type": "image/png", "purpose": "any" },
-    { "src": "icons/icon-96.png",  "sizes": "96x96",   "type": "image/png", "purpose": "any" },
-    { "src": "icons/icon-128.png", "sizes": "128x128", "type": "image/png", "purpose": "any" },
-    { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any maskable" },
-    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
+    {
+      "src": "https://charlystream-bo.github.io/streaming/icons/icon-72.png",
+      "sizes": "72x72",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "https://charlystream-bo.github.io/streaming/icons/icon-96.png",
+      "sizes": "96x96",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "https://charlystream-bo.github.io/streaming/icons/icon-128.png",
+      "sizes": "128x128",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "https://charlystream-bo.github.io/streaming/icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "https://charlystream-bo.github.io/streaming/icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
   ],
   "screenshots": [
     {
-      "src": "icons/screenshot1.png",
+      "src": "https://charlystream-bo.github.io/streaming/icons/screenshot1.png",
       "sizes": "390x844",
       "type": "image/png",
       "form_factor": "narrow",
-      "label": "Catálogo de Anime y Doramas"
+      "label": "Catálogo Charly Stream"
     }
   ],
   "shortcuts": [
     {
       "name": "Anime",
-      "url": "/streaming/?filter=anime",
+      "url": "/streaming/index.html?filter=anime",
       "description": "Ver catálogo de anime"
     },
     {
-      "name": "Doramas",
-      "url": "/streaming/?filter=dorama",
-      "description": "Ver catálogo de doramas"
+      "name": "Deportes",
+      "url": "/streaming/index.html?filter=deporte",
+      "description": "Ver deportes en vivo"
     }
   ],
-  "related_applications": [],
   "prefer_related_applications": false
 }

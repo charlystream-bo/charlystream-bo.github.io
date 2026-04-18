@@ -5,24 +5,14 @@
 
 /* ── Estado Global ── */
 let STATE = {
-  sesion: null,
-  contenidoActual: null,
-  episodioActual: 0,
-  servidorActual: 0,
-  catalogoAnime: [],
-  catalogoDoramas: [],
-  catalogoPeliculas: [],
-  catalogoDeportes: [],
-  catalogoMusica: [],
-  heroItems: [],
-  heroIndex: 0,
-  heroTimer: null,
-  countdownTimer: null,
-  countdownSec: 10,
-  todosLosItems: [],
-  favoritosView: false,
-  musicaIndex: 0,
-  musicaPlaying: false,
+  sesion: null, contenidoActual: null, episodioActual: 0, servidorActual: 0,
+  catalogoAnime: [], catalogoDoramas: [], catalogoPeliculas: [],
+  catalogoDeportes: [], catalogoMusica: [],
+  catalogoTelenovelas: [], catalogoCdrama: [], catalogoAnimeEsp: [], catalogoFrutinovel: [],
+  heroItems: [], heroIndex: 0, heroTimer: null,
+  countdownTimer: null, countdownSec: 10,
+  todosLosItems: [], favoritosView: false,
+  musicaIndex: 0, musicaPlaying: false,
 };
 
 /* ─────────────────────────────────────────
@@ -61,11 +51,23 @@ function ingresarConCodigo() {
   iniciarApp(sesion);
 }
 
-function mostrarPrueba() {
-  const s = JSON.parse(localStorage.getItem('cs_sesion') || 'null');
-  if (s && Date.now() < s.expira) { iniciarApp(s); return; }
-  mostrarToast('📩 Escríbele a Charly para tu código gratis 🎁', 4000);
-  setTimeout(() => window.open('https://wa.me/59165657865?text=Hola%20Charly%2C%20quiero%20mis%207%20d%C3%ADas%20gratis%20de%20Charly%20Stream', '_blank'), 1200);
+function toggleCodigoVip() {
+  const el = document.getElementById('vip-input-section');
+  el.style.display = el.style.display === 'none' ? 'block' : 'none';
+}
+
+function iniciarPruebaAutomatica() {
+  const guardado = JSON.parse(localStorage.getItem('cs_sesion') || 'null');
+  if (guardado) {
+    if (Date.now() > guardado.expira) { mostrarModalExpiry(); return; }
+    iniciarApp(guardado);
+    return;
+  }
+  // Crear sesión automática de 3 días
+  const expira = Date.now() + 3 * 86400000;
+  const sesion = { codigo: "PRUEBA_3_DIAS", dias: 3, tipo: "prueba", expira, activado: Date.now() };
+  localStorage.setItem('cs_sesion', JSON.stringify(sesion));
+  iniciarApp(sesion);
 }
 
 function verificarSesionAlInicio() {
@@ -240,19 +242,21 @@ function generarEpisodiosVacios(n) {
 ───────────────────────────────────────── */
 function construirTodosLosItems() {
   STATE.catalogoDeportes = DEPORTES_DATA || [];
-  STATE.catalogoMusica = (MUSICA_PLAYLIST || []).map(m => ({
-    ...m, tipo: 'musica', estado: 'Disponible', rating: 9.0, sinopsis: m.artista,
-    banner: m.poster, episodios: [],
-    servidores: [{nombre: 'YouTube', url: `https://www.youtube.com/embed/${m.yt_id}?autoplay=1`, tipo: 'iframe'}]
-  }));
+  STATE.catalogoTelenovelas = TELENOVELAS_DATA || [];
+  STATE.catalogoCdrama = CDRAMA_DATA || [];
+  STATE.catalogoAnimeEsp = ANIME_ESP_DATA || [];
+  STATE.catalogoFrutinovel = FRUTINOVELAS_DATA || [];
+  const toMs = m => ({ ...m, tipo:'musica', estado:'Disponible', rating:9.0,
+    sinopsis: m.artista, banner: m.poster, episodios:[],
+    servidores:[{nombre:'YouTube', url:`https://www.youtube.com/embed/${m.yt_id}?autoplay=1`, tipo:'iframe'}]
+  });
+  STATE.catalogoMusica = (MUSICA_PLAYLIST || []).map(toMs);
   STATE.todosLosItems = [
-    ...STATE.catalogoAnime,
-    ...STATE.catalogoDoramas,
-    ...STATE.catalogoPeliculas,
-    ...STATE.catalogoDeportes,
-    ...STATE.catalogoMusica,
-    ...(STATE.catalogoDormir || []),
-    ...(STATE.catalogoSuperacion || []),
+    ...STATE.catalogoAnime, ...STATE.catalogoDoramas, ...STATE.catalogoPeliculas,
+    ...STATE.catalogoDeportes, ...STATE.catalogoMusica,
+    ...STATE.catalogoTelenovelas, ...STATE.catalogoCdrama, ...STATE.catalogoAnimeEsp,
+    ...STATE.catalogoFrutinovel,
+    ...(STATE.catalogoDormir || []), ...(STATE.catalogoSuperacion || []),
   ];
 }
 
@@ -267,13 +271,16 @@ function renderCatalogo() {
   const todo = [...STATE.catalogoAnime, ...STATE.catalogoDoramas, ...STATE.catalogoPeliculas];
   const top10 = [...todo].sort((a,b) => b.rating - a.rating).slice(0,10);
   renderRow('grid-top10', top10, true);
-  renderRow('grid-anime', STATE.catalogoAnime);
+  renderRow('grid-anime', [...STATE.catalogoAnime, ...STATE.catalogoAnimeEsp]);
+  renderRow('grid-cdrama', STATE.catalogoCdrama);
+  renderRow('grid-frutinovel', STATE.catalogoFrutinovel);
   renderRow('grid-doramas', STATE.catalogoDoramas);
   renderRow('grid-peliculas', STATE.catalogoPeliculas);
   renderRow('grid-dormir', STATE.catalogoDormir || []);
   renderRow('grid-superacion', STATE.catalogoSuperacion || []);
   renderRow('grid-deportes', STATE.catalogoDeportes);
   renderRow('grid-musica', STATE.catalogoMusica);
+  renderRow('grid-telenovelas', STATE.catalogoTelenovelas);
   STATE.heroItems = top10.slice(0,3);
   renderContinuar();
 }
@@ -474,18 +481,18 @@ function abrirDetalle(id) {
 
 function renderDetalleEpisodios(item) {
   const lista = document.getElementById('detail-episodes');
-  lista.innerHTML = item.episodios.map((ep, i) => `
-<div class="detail-ep-item" onclick="reproducirEpisodioDesdeDetalle(${i})">
+  const vistos = JSON.parse(localStorage.getItem('cs_vistos_' + item.id) || '[]');
+  lista.innerHTML = item.episodios.map((ep, i) => {
+    const visto = vistos.includes(i);
+    return `
+<div class="detail-ep-item${visto?' visto':''}" onclick="reproducirEpisodioDesdeDetalle(${i})" title="Episodio ${ep.num}${visto?' ✓ Visto':''}">
   <div class="detail-ep-num">${ep.num}</div>
-  <div class="detail-ep-info">
-    <div class="detail-ep-name">${ep.titulo}</div>
-    <div class="detail-ep-dur">${ep.duracion || '24 min'}
-      ${ep.servidores && ep.servidores.length ? ' · '+ep.servidores.length+' servidor(es)' : ' · Sin servidor aún'}
-    </div>
-  </div>
   <span class="detail-ep-play">▶</span>
-</div>`).join('');
+  ${visto ? '<span class="detail-ep-dur">✓</span>' : ''}
+</div>`;
+  }).join('');
 }
+
 
 function cerrarDetalle(e) {
   if (e && e.target !== document.getElementById('modal-detail')) return;
@@ -518,12 +525,19 @@ function reproducirDirecto(id, srvIndex) {
 /* ─────────────────────────────────────────
    REPRODUCTOR
 ───────────────────────────────────────── */
+function marcarEpisodioVisto(itemId, epIndex) {
+  const key = 'cs_vistos_' + itemId;
+  const v = JSON.parse(localStorage.getItem(key) || '[]');
+  if (!v.includes(epIndex)) { v.push(epIndex); localStorage.setItem(key, JSON.stringify(v)); }
+}
+
 function reproducirEpisodio(item, epIndex, srvIndex) {
   if (!item) return;
   STATE.contenidoActual = item;
   STATE.episodioActual = epIndex;
   STATE.servidorActual = srvIndex || 0;
   guardarHistorial(item.id);
+  marcarEpisodioVisto(item.id, epIndex);
   mostrarPagina('page-player');
   // Info
   document.getElementById('player-show-title').textContent = item.titulo;
@@ -701,14 +715,19 @@ function renderSidebarEpisodios(item, epActivo) {
   const lista = document.getElementById('episodes-list');
   if (!lista) return;
   if (!item.episodios || item.episodios.length <= 1) { lista.innerHTML = ''; return; }
-  lista.innerHTML = item.episodios.map((ep, i) => `
-<div class="ep-item ${i===epActivo?'active':''}" onclick="cambiarAlEpisodio(${i})">
-  <div class="ep-num-box">${ep.num}</div>
-  <div class="ep-info-col">
-    <div class="ep-name">${ep.titulo}</div>
-    <div class="ep-dur">${ep.duracion || '24 min'}</div>
-  </div>
-</div>`).join('');
+  const vistos = JSON.parse(localStorage.getItem('cs_vistos_' + item.id) || '[]');
+  lista.innerHTML = `<div class="sidebar-ep-grid">${
+    item.episodios.map((ep, i) => {
+      const activo = i === epActivo;
+      const visto = vistos.includes(i);
+      return `<div class="sidebar-ep-cell ${activo?'active':''} ${visto&&!activo?'visto':''}" onclick="cambiarAlEpisodio(${i})" title="Episodio ${ep.num}">${ep.num}</div>`;
+    }).join('')
+  }</div>`;
+  // scroll al activo
+  setTimeout(() => {
+    const el = lista.querySelector('.sidebar-ep-cell.active');
+    if (el) el.scrollIntoView({block:'nearest'});
+  }, 100);
 }
 
 function cambiarAlEpisodio(index) {
@@ -790,11 +809,13 @@ function filtrar(tipo, btn) {
   }
   document.getElementById('search-results').style.display = 'none';
   document.getElementById('search-input').value = '';
-  const todas = ['sec-continuar','sec-top10','sec-anime','sec-doramas','sec-peliculas','sec-dormir','sec-superacion','sec-deportes','sec-musica','sec-tiktok'];
+  const todas = ['sec-continuar','sec-top10','sec-anime','sec-cdrama','sec-frutinovel','sec-doramas','sec-peliculas','sec-dormir','sec-superacion','sec-deportes','sec-musica','sec-tiktok'];
   const map = {
     todo: todas,
     anime: ['sec-anime'],
-    dorama: ['sec-doramas'],
+    dorama: ['sec-doramas','sec-cdrama','sec-frutinovel'],
+    cdrama: ['sec-cdrama'],
+    frutinovel: ['sec-frutinovel'],
     pelicula: ['sec-peliculas'],
     dormir: ['sec-dormir'],
     superacion: ['sec-superacion'],

@@ -124,7 +124,8 @@ async function fetchAnime() {
   const cache = JSON.parse(sessionStorage.getItem('cs_anime') || 'null');
   if (cache) { STATE.catalogoAnime = cache; return; }
   try {
-    const res = await fetch(`${CONFIG.jikan}/top/anime?filter=airing&limit=20&sfw`);
+    const res = await fetch(`${CONFIG.jikan}/top/anime?filter=airing&limit=20&sfw`, { signal: AbortSignal.timeout(6000) });
+    if (!res.ok) throw new Error("API error");
     const data = await res.json();
     STATE.catalogoAnime = (data.data || []).map(a => mapJikanToItem(a));
     sessionStorage.setItem('cs_anime', JSON.stringify(STATE.catalogoAnime));
@@ -154,7 +155,7 @@ async function fetchDoramas() {
   if (cache) { STATE.catalogoDoramas = cache; return; }
   try {
     const promesas = DORAMAS_TMDB_IDS.slice(0,8).map(d =>
-      fetch(`${CONFIG.tmdb}/tv/${d.tmdb_id}?api_key=${CONFIG.tmdb_key}&language=es-ES`).then(r=>r.json()).catch(()=>null)
+      fetch(`${CONFIG.tmdb}/tv/${d.tmdb_id}?api_key=${CONFIG.tmdb_key}&language=es-ES`, { signal: AbortSignal.timeout(6000) }).then(r=>r.ok?r.json():null).catch(()=>null)
     );
     const results = await Promise.all(promesas);
     STATE.catalogoDoramas = results.filter(Boolean).map((d,i) => mapTMDBToItem(d, 'dorama', DORAMAS_TMDB_IDS[i]));
@@ -167,7 +168,7 @@ async function fetchPeliculas() {
   if (cache) { STATE.catalogoPeliculas = cache; return; }
   try {
     const promesas = PELICULAS_TMDB_IDS.slice(0,8).map(p =>
-      fetch(`${CONFIG.tmdb}/movie/${p.tmdb_id}?api_key=${CONFIG.tmdb_key}&language=es-ES`).then(r=>r.json()).catch(()=>null)
+      fetch(`${CONFIG.tmdb}/movie/${p.tmdb_id}?api_key=${CONFIG.tmdb_key}&language=es-ES`, { signal: AbortSignal.timeout(6000) }).then(r=>r.ok?r.json():null).catch(()=>null)
     );
     const results = await Promise.all(promesas);
     STATE.catalogoPeliculas = results.filter(Boolean).map((m,i) => mapTMDBToItem(m, 'pelicula', PELICULAS_TMDB_IDS[i]));

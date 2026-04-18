@@ -108,7 +108,11 @@ async function iniciarApp(sesion) {
   document.getElementById('catalog-main').style.display = 'block';
   iniciarHeroSlider();
   renderContinuar();
+  renderTikTokSection();
+  trackVisit();
+  if (sesion.tipo === 'admin') renderAdminPanel();
 }
+
 
 async function fetchAnime() {
   const cache = JSON.parse(sessionStorage.getItem('cs_anime') || 'null');
@@ -860,3 +864,162 @@ document.addEventListener('DOMContentLoaded', () => {
   const input = document.getElementById('input-codigo');
   if (input) input.addEventListener('keydown', e => { if (e.key === 'Enter') ingresarConCodigo(); });
 });
+
+/* ─────────────────────────────────────────
+   TIKTOK TRENDING SECTION
+───────────────────────────────────────── */
+function renderTikTokSection() {
+  const main = document.getElementById('catalog-main');
+  if (!main || !window.TIKTOK_TRENDING) return;
+
+  // Agregar items al catálogo total
+  TIKTOK_TRENDING.forEach(item => {
+    if (!STATE.todosLosItems.find(x => x.id === item.id)) {
+      STATE.todosLosItems.push(item);
+    }
+  });
+
+  // Crear sección si no existe
+  let sec = document.getElementById('sec-tiktok');
+  if (!sec) {
+    sec = document.createElement('div');
+    sec.id = 'sec-tiktok';
+    sec.className = 'section-row tiktok-section';
+    // Insertar antes del Top10
+    const top10 = document.getElementById('sec-top10');
+    if (top10) main.insertBefore(sec, top10);
+    else main.prepend(sec);
+  }
+
+  sec.innerHTML = `
+<div class="tiktok-header">
+  <div class="tiktok-title-wrap">
+    <span class="tiktok-logo">🎵</span>
+    <span class="tiktok-section-title">🔥 Viral en TikTok</span>
+  </div>
+  <div class="tiktok-live-badge">
+    <span class="tiktok-live-dot"></span>TRENDING
+  </div>
+</div>
+<div class="tiktok-row" id="tiktok-row">
+  ${TIKTOK_TRENDING.map(item => crearTikTokCard(item)).join('')}
+</div>`;
+}
+
+function crearTikTokCard(item) {
+  const tipoLabel = item.tipo === 'anime' ? '🎌' : '🏯';
+  return `
+<div class="tiktok-card" onclick="abrirDetalle('${item.id}')">
+  <img class="tiktok-poster" src="${item.poster}" alt="${item.titulo}"
+    loading="lazy" onerror="this.src='https://via.placeholder.com/180x260/1a1a24/e50914?text=${encodeURIComponent(item.titulo?.substring(0,12)||'')}'" >
+  <div class="tiktok-overlay"></div>
+  <div class="tiktok-badge">🎵 TOP TIKTOK</div>
+  <div class="tiktok-views">👁 ${item.views}</div>
+  <div class="tiktok-info">
+    <div class="tiktok-card-title">${tipoLabel} ${item.titulo}</div>
+    <span class="tiktok-tag">${item.tiktok_tag}</span>
+    <button class="tiktok-play-btn" onclick="event.stopPropagation();abrirDetalle('${item.id}')">
+      <span>▶</span> Ver Ahora
+    </button>
+  </div>
+</div>`;
+}
+
+/* ─────────────────────────────────────────
+   ADMIN PANEL — Rastreo y estadísticas
+───────────────────────────────────────── */
+async function renderAdminPanel() {
+  const main = document.getElementById('catalog-main');
+  if (!main) return;
+
+  let panel = document.getElementById('admin-panel');
+  if (!panel) {
+    panel = document.createElement('div');
+    panel.id = 'admin-panel';
+    panel.className = 'admin-panel';
+    main.prepend(panel);
+  }
+
+  const visitas = await obtenerVisitas();
+  const sesionesHoy = JSON.parse(localStorage.getItem('cs_admin_sessions') || '[]');
+  const codigosUsados = new Set(sesionesHoy.map(s => s.codigo)).size;
+
+  panel.innerHTML = `
+<div class="admin-panel-title">👑 Panel Administrador — Charly Stream</div>
+<div class="admin-stats-grid">
+  <div class="admin-stat-card highlight">
+    <div class="admin-stat-num" id="admin-visitas">${visitas}</div>
+    <div class="admin-stat-label">👁 Visitas Totales</div>
+  </div>
+  <div class="admin-stat-card">
+    <div class="admin-stat-num">${ADMIN_CONFIG.totalCodigos}</div>
+    <div class="admin-stat-label">🔑 Códigos Totales</div>
+  </div>
+  <div class="admin-stat-card">
+    <div class="admin-stat-num">${ADMIN_CONFIG.codigosPrueba}</div>
+    <div class="admin-stat-label">🎁 Códigos Gratis</div>
+  </div>
+  <div class="admin-stat-card">
+    <div class="admin-stat-num">${ADMIN_CONFIG.codigosPremium}</div>
+    <div class="admin-stat-label">⭐ Códigos VIP</div>
+  </div>
+  <div class="admin-stat-card">
+    <div class="admin-stat-num">${codigosUsados}</div>
+    <div class="admin-stat-label">✅ Usados hoy</div>
+  </div>
+</div>
+<div class="admin-codes-list">
+  ${CODIGOS_ACCESO.map(c => `
+  <div class="admin-code-row">
+    <code>${c.codigo}</code>
+    <span>${c.dias} días</span>
+    <span class="admin-code-badge ${c.tipo}">${c.tipo.toUpperCase()}</span>
+  </div>`).join('')}
+</div>
+<button class="admin-refresh-btn" onclick="refreshAdminStats()">🔄 Actualizar Stats</button>`;
+}
+
+async function obtenerVisitas() {
+  try {
+    const r = await fetch(`https://api.countapi.xyz/hit/${ADMIN_CONFIG.countapi_ns}/${ADMIN_CONFIG.countapi_key}`);
+    const d = await r.json();
+    return d.value || '—';
+  } catch(e) { return '—'; }
+}
+
+async function refreshAdminStats() {
+  const el = document.getElementById('admin-visitas');
+  if (el) {
+    el.textContent = '...';
+    const v = await obtenerVisitas();
+    el.textContent = v;
+    mostrarToast('✅ Stats actualizados', 2000);
+  }
+}
+
+/* ─────────────────────────────────────────
+   TRACKING DE VISITAS
+───────────────────────────────────────── */
+function trackVisit() {
+  // Registrar sesión local para el admin
+  const sesion = STATE.sesion;
+  if (!sesion) return;
+  try {
+    let sessions = JSON.parse(localStorage.getItem('cs_admin_sessions') || '[]');
+    const today = new Date().toDateString();
+    // Limpiar sesiones de más de 7 días
+    sessions = sessions.filter(s => {
+      const d = new Date(s.fecha);
+      return (Date.now() - d.getTime()) < 7 * 86400000;
+    });
+    sessions.push({ codigo: sesion.codigo, tipo: sesion.tipo, fecha: new Date().toISOString() });
+    localStorage.setItem('cs_admin_sessions', JSON.stringify(sessions));
+  } catch(e) {}
+
+  // Ping contador de visitas (no bloqueante)
+  if (sesion.tipo !== 'admin') {
+    fetch(`https://api.countapi.xyz/hit/${ADMIN_CONFIG.countapi_ns}/${ADMIN_CONFIG.countapi_key}`)
+      .catch(() => {});
+  }
+}
+

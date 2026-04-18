@@ -1153,8 +1153,19 @@ function getResumeTime(itemId, epIndex) {
   } catch(e) { return 0; }
 }
 
-// Hook al video nativo HLS para guardar progreso cada 5 segundos
+// Hook al video nativo HLS y Splash Screen
 document.addEventListener('DOMContentLoaded', () => {
+  // Splash Screen & Auto Trial
+  setTimeout(() => {
+    const splash = document.getElementById('splash-screen');
+    if (splash) {
+      splash.style.opacity = '0';
+      splash.style.visibility = 'hidden';
+      setTimeout(() => splash.remove(), 800);
+    }
+    iniciarPruebaAutomatica();
+  }, 3000);
+
   const vid = document.getElementById('player-video');
   if (!vid) return;
   let saveInterval = null;

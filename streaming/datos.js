@@ -346,3 +346,70 @@ const ADMIN_CONFIG = {
   codigosPrueba: CODIGOS_ACCESO.filter(c => c.tipo === "prueba").length,
   codigosPremium: CODIGOS_ACCESO.filter(c => c.tipo === "premium").length,
 };
+
+// ── DEPORTES EN VIVO (Fútbol / Mundial 2026) ──────────────
+const DEPORTES_DATA = [
+  { id:"dep001", titulo:"⚽ Mundial 2026 — Clasificatorias CONMEBOL", tipo:"deporte", subtipo:"futbol",
+    generos:["Fútbol","Mundial","CONMEBOL"], audio:"Español Latino", año:2026, estado:"En Vivo", rating:10.0,
+    sinopsis:"Las eliminatorias sudamericanas para el Mundial 2026 en USA, Canadá y México. Bolivia y toda CONMEBOL en vivo.",
+    poster:"https://images.unsplash.com/photo-1508098682722-e99c43a406b2?w=400&h=600&fit=crop&q=80",
+    banner:"https://images.unsplash.com/photo-1508098682722-e99c43a406b2?w=1280&h=500&fit=crop&q=80",
+    episodios:[], servidores:[
+      {nombre:"FIFA TV",url:"https://www.youtube.com/embed/videoseries?list=PLet-WBgbT9AaSfMpfJEVxNKzPJJMc3qy6&autoplay=1",tipo:"iframe"},
+      {nombre:"CONMEBOL",url:"https://www.youtube.com/embed/videoseries?list=PLet-WBgbT9AA3pFKNNj__BRUqjvvM5hCR&autoplay=1",tipo:"iframe"}
+    ]},
+  { id:"dep002", titulo:"🏆 UEFA Champions League 2025-26", tipo:"deporte", subtipo:"futbol",
+    generos:["Fútbol","Champions","Europa"], audio:"Español Latino", año:2026, estado:"En Emisión", rating:9.8,
+    sinopsis:"Real Madrid, Barcelona, Liverpool y más. Los mejores goles y resúmenes de la Champions League.",
+    poster:"https://images.unsplash.com/photo-1574629810360-7efbbe195018?w=400&h=600&fit=crop&q=80",
+    banner:"https://images.unsplash.com/photo-1574629810360-7efbbe195018?w=1280&h=500&fit=crop&q=80",
+    episodios:[], servidores:[
+      {nombre:"UEFA Highlights",url:"https://www.youtube.com/embed/videoseries?list=PL7_YADPlNnkbQpSfKB5MRMgLAIIyUBVrS&autoplay=1",tipo:"iframe"}
+    ]},
+  { id:"dep003", titulo:"🇧🇴 Liga Profesional Bolivia 2026", tipo:"deporte", subtipo:"futbol",
+    generos:["Fútbol","Bolivia","Local"], audio:"Español Latino", año:2026, estado:"En Emisión", rating:9.0,
+    sinopsis:"The Strongest, Bolívar, Oriente Petrolero. El fútbol boliviano en su máxima expresión.",
+    poster:"https://images.unsplash.com/photo-1522778119026-d647f0596c20?w=400&h=600&fit=crop&q=80",
+    banner:"https://images.unsplash.com/photo-1522778119026-d647f0596c20?w=1280&h=500&fit=crop&q=80",
+    episodios:[], servidores:[
+      {nombre:"Deportes BO",url:"https://www.youtube.com/embed/live_stream?channel=UCXmUaFoRMf0OD3-9PnTCE1w&autoplay=1",tipo:"iframe"}
+    ]},
+  { id:"dep004", titulo:"⚡ Copa Libertadores 2026", tipo:"deporte", subtipo:"futbol",
+    generos:["Fútbol","Libertadores","CONMEBOL"], audio:"Español Latino", año:2026, estado:"En Emisión", rating:9.5,
+    sinopsis:"El torneo más importante de América del Sur. Equipos históricos compiten por la gloria continental.",
+    poster:"https://images.unsplash.com/photo-1551958219-acbc68bab90e?w=400&h=600&fit=crop&q=80",
+    banner:"https://images.unsplash.com/photo-1551958219-acbc68bab90e?w=1280&h=500&fit=crop&q=80",
+    episodios:[], servidores:[
+      {nombre:"Libertadores TV",url:"https://www.youtube.com/embed/videoseries?list=PLC4I5FqsGHb0VjhZVjFkT0tnelOWiRraN&autoplay=1",tipo:"iframe"}
+    ]},
+  { id:"dep005", titulo:"⭐ Premier League — Goles 2025-26", tipo:"deporte", subtipo:"futbol",
+    generos:["Fútbol","Premier","Inglaterra"], audio:"Español Latino", año:2026, estado:"En Emisión", rating:9.3,
+    sinopsis:"Manchester City, Arsenal, Liverpool. Los mejores momentos de la liga más emocionante del mundo.",
+    poster:"https://images.unsplash.com/photo-1489944440615-453fc2b6a9a9?w=400&h=600&fit=crop&q=80",
+    banner:"https://images.unsplash.com/photo-1489944440615-453fc2b6a9a9?w=1280&h=500&fit=crop&q=80",
+    episodios:[], servidores:[
+      {nombre:"PL Highlights",url:"https://www.youtube.com/embed/videoseries?list=PL4SZgQl2BxW7f9IXqMNfsPo6Tyi_jqOJv&autoplay=1",tipo:"iframe"}
+    ]},
+  { id:"dep006", titulo:"🇦🇷 Superliga Argentina 2026", tipo:"deporte", subtipo:"futbol",
+    generos:["Fútbol","Argentina","River vs Boca"], audio:"Español Latino", año:2026, estado:"En Emisión", rating:9.1,
+    sinopsis:"River vs Boca, el Superclásico y toda la pasión del fútbol argentino. El mejor del continente.",
+    poster:"https://images.unsplash.com/photo-1431324155629-1a6deb1dec8d?w=400&h=600&fit=crop&q=80",
+    banner:"https://images.unsplash.com/photo-1431324155629-1a6deb1dec8d?w=1280&h=500&fit=crop&q=80",
+    episodios:[], servidores:[
+      {nombre:"TyC Sports",url:"https://www.youtube.com/embed/videoseries?list=PLPIfMjz58KLrLEZ66jl_4YBjhO5hOkBNI&autoplay=1",tipo:"iframe"}
+    ]},
+];
+
+// ── PLAYLIST DE MÚSICA LATINA ─────────────────────────────
+const MUSICA_PLAYLIST = [
+  {id:"mus001",titulo:"Gasolina",artista:"Daddy Yankee",generos:["Reggaeton"],año:2004,duracion:"3:18",yt_id:"G7OotGQvDro",poster:"https://i.ytimg.com/vi/G7OotGQvDro/hqdefault.jpg"},
+  {id:"mus002",titulo:"Despacito",artista:"Luis Fonsi ft. Daddy Yankee",generos:["Pop Latino"],año:2017,duracion:"3:48",yt_id:"ktvTqknDobU",poster:"https://i.ytimg.com/vi/ktvTqknDobU/hqdefault.jpg"},
+  {id:"mus003",titulo:"Mi Gente",artista:"J Balvin & Willy William",generos:["Reggaeton"],año:2017,duracion:"3:13",yt_id:"wnJ6LuUFpMo",poster:"https://i.ytimg.com/vi/wnJ6LuUFpMo/hqdefault.jpg"},
+  {id:"mus004",titulo:"Tusa",artista:"Karol G & Nicki Minaj",generos:["Reggaeton"],año:2019,duracion:"3:22",yt_id:"yNu3DobzGLk",poster:"https://i.ytimg.com/vi/yNu3DobzGLk/hqdefault.jpg"},
+  {id:"mus005",titulo:"Dakiti",artista:"Bad Bunny & Jhay Cortez",generos:["Trap Latino"],año:2020,duracion:"3:40",yt_id:"KpZcjN8uEP0",poster:"https://i.ytimg.com/vi/KpZcjN8uEP0/hqdefault.jpg"},
+  {id:"mus006",titulo:"Pepas",artista:"Farruko",generos:["Reggaeton"],año:2021,duracion:"3:30",yt_id:"Ks2SDzxuniE",poster:"https://i.ytimg.com/vi/Ks2SDzxuniE/hqdefault.jpg"},
+  {id:"mus007",titulo:"Hawái",artista:"Maluma",generos:["Pop Latino"],año:2020,duracion:"3:43",yt_id:"pF27z24kLqY",poster:"https://i.ytimg.com/vi/pF27z24kLqY/hqdefault.jpg"},
+  {id:"mus008",titulo:"Con Calma",artista:"Daddy Yankee & Snow",generos:["Reggaeton"],año:2019,duracion:"3:11",yt_id:"F-7naSADCiA",poster:"https://i.ytimg.com/vi/F-7naSADCiA/hqdefault.jpg"},
+  {id:"mus009",titulo:"Bichota",artista:"Karol G",generos:["Reggaeton"],año:2020,duracion:"3:04",yt_id:"nXMQGEJRdNk",poster:"https://i.ytimg.com/vi/nXMQGEJRdNk/hqdefault.jpg"},
+  {id:"mus010",titulo:"El Efecto",artista:"Rauw Alejandro",generos:["R&B Latino"],año:2022,duracion:"4:14",yt_id:"ExcNcdTGT0A",poster:"https://i.ytimg.com/vi/ExcNcdTGT0A/hqdefault.jpg"},
+];

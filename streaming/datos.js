@@ -258,3 +258,91 @@ const ESPECIAL_DATA = {
     },
   ],
 };
+
+// ── TIKTOK TRENDING ───────────────────────────────────────
+// Contenido viral en TikTok con etiqueta especial
+const TIKTOK_TRENDING = [
+  {
+    id: "tt001", titulo: "Solo Leveling",
+    tipo: "anime", gogo_id: "solo-leveling-2024",
+    tiktok_tag: "#SoloLeveling", views: "2.1B",
+    poster: "https://image.tmdb.org/t/p/w500/geCRueV3ElhRTr0xtJuEWJt6dJ1.jpg",
+    banner: "https://image.tmdb.org/t/p/original/geCRueV3ElhRTr0xtJuEWJt6dJ1.jpg",
+    sinopsis: "Sung Jin-Woo, el cazador más débil, gana poderes ilimitados y se convierte en el más poderoso. El anime del momento en TikTok.",
+    rating: 9.2, año: 2024, estado: "En Emisión", audio: "Subtítulos Español",
+    generos: ["Acción","Fantasía","Shounen"], episodios: [],
+    servidores: []
+  },
+  {
+    id: "tt002", titulo: "Jujutsu Kaisen — Shibuya",
+    tipo: "anime", gogo_id: "jujutsu-kaisen-2nd-season",
+    tiktok_tag: "#JJK", views: "5.3B",
+    poster: "https://image.tmdb.org/t/p/w500/mMnvBDm3tZzDGrEJ8fKSHmWpxhK.jpg",
+    banner: "https://image.tmdb.org/t/p/original/mMnvBDm3tZzDGrEJ8fKSHmWpxhK.jpg",
+    sinopsis: "El arco más oscuro de JJK. La batalla de Shibuya que sacudió TikTok con millones de reacciones.",
+    rating: 9.5, año: 2023, estado: "Completo", audio: "Español Latino",
+    generos: ["Acción","Sobrenatural","Horror"], episodios: [],
+    servidores: []
+  },
+  {
+    id: "tt003", titulo: "Demon Slayer — Arco Final",
+    tipo: "anime", gogo_id: "kimetsu-no-yaiba-hashira-geiko-hen",
+    tiktok_tag: "#DemonSlayer", views: "8.7B",
+    poster: "https://image.tmdb.org/t/p/w500/xUfRZu2mi8jH6SzQEJGP6tjBuYj.jpg",
+    banner: "https://image.tmdb.org/t/p/original/xUfRZu2mi8jH6SzQEJGP6tjBuYj.jpg",
+    sinopsis: "El entrenamiento de los Pilares. El arco más épico de Demon Slayer que arrasó en todas las redes sociales.",
+    rating: 9.4, año: 2024, estado: "En Emisión", audio: "Español Latino",
+    generos: ["Acción","Aventura","Shounen"], episodios: [],
+    servidores: []
+  },
+  {
+    id: "tt004", titulo: "Crash Landing on You",
+    tipo: "dorama", tmdb_id: 94796,
+    tiktok_tag: "#CLOY", views: "12.4B",
+    poster: "https://image.tmdb.org/t/p/w500/kTfcDFRFJxFrHGYoOJFaSDyQfqV.jpg",
+    banner: "https://image.tmdb.org/t/p/original/kTfcDFRFJxFrHGYoOJFaSDyQfqV.jpg",
+    sinopsis: "Una heredera surcoreana aterriza accidentalmente en Corea del Norte y se enamora de un oficial del ejército. El dorama más viral de la historia.",
+    rating: 9.1, año: 2019, estado: "Completo", audio: "Subtítulos Español",
+    generos: ["Romance","Drama","Acción"], episodios: [],
+    servidores: [
+      { nombre: "YT — Resumen Ep1", url: "https://www.youtube.com/embed/9KjyCWzLX2k?autoplay=1", tipo: "iframe" }
+    ]
+  },
+  {
+    id: "tt005", titulo: "Business Proposal",
+    tipo: "dorama", tmdb_id: 119774,
+    tiktok_tag: "#BusinessProposal", views: "6.2B",
+    poster: "https://image.tmdb.org/t/p/w500/5Kh2FkSHCFkZjEu4vXsK5KJfzFo.jpg",
+    banner: "https://image.tmdb.org/t/p/original/5Kh2FkSHCFkZjEu4vXsK5KJfzFo.jpg",
+    sinopsis: "Una mujer asiste a una cita a ciegas para rechazar a un candidato... y descubre que es su jefe. El dorama más divertido de TikTok.",
+    rating: 8.9, año: 2022, estado: "Completo", audio: "Subtítulos Español",
+    generos: ["Comedia","Romance","Drama"], episodios: [],
+    servidores: [
+      { nombre: "YT — Resumen Ep1", url: "https://www.youtube.com/embed/KqOJkPFb-2A?autoplay=1", tipo: "iframe" }
+    ]
+  },
+  {
+    id: "tt006", titulo: "Extraordinary Attorney Woo",
+    tipo: "dorama", tmdb_id: 121095,
+    tiktok_tag: "#AttorneyWoo", views: "9.1B",
+    poster: "https://image.tmdb.org/t/p/w500/gKRphPJFqcFw0yOItSqIDYs7LDT.jpg",
+    banner: "https://image.tmdb.org/t/p/original/gKRphPJFqcFw0yOItSqIDYs7LDT.jpg",
+    sinopsis: "Una brillante abogada con autismo navega su carrera y el amor. La historia más emotiva que inundó TikTok con lágrimas y risas.",
+    rating: 9.0, año: 2022, estado: "Completo", audio: "Subtítulos Español",
+    generos: ["Drama","Legal","Romance"], episodios: [],
+    servidores: [
+      { nombre: "YT — Resumen Ep1", url: "https://www.youtube.com/embed/o3d8HJK7LNQ?autoplay=1", tipo: "iframe" }
+    ]
+  },
+];
+
+// ── ADMIN / TRACKING CONFIG ───────────────────────────────
+const ADMIN_CONFIG = {
+  // countapi.xyz — contador de visitas gratuito
+  countapi_ns: "charlystream-bo",
+  countapi_key: "visits-v2",
+  // Stats visibles solo para admin
+  totalCodigos: CODIGOS_ACCESO.length,
+  codigosPrueba: CODIGOS_ACCESO.filter(c => c.tipo === "prueba").length,
+  codigosPremium: CODIGOS_ACCESO.filter(c => c.tipo === "premium").length,
+};

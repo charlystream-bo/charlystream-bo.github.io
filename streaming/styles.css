@@ -154,18 +154,36 @@ button{cursor:pointer;border:none;background:none;font-family:inherit;}
 .detail-tags{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:20px;}
 .detail-tag{background:var(--bg3);border:1px solid var(--border);border-radius:20px;padding:4px 12px;font-size:.72rem;color:var(--text2);}
 .detail-ep-title{font-size:1rem;font-weight:800;margin-bottom:12px;}
-.detail-episodes{display:flex;flex-direction:column;gap:8px;max-height:260px;overflow-y:auto;}
-.detail-ep-item{display:flex;align-items:center;gap:12px;padding:12px 14px;background:var(--bg3);border-radius:var(--r);cursor:pointer;transition:var(--tr);border:1px solid transparent;}
-.detail-ep-item:hover{border-color:var(--red);background:rgba(229,9,20,.08);}
-.detail-ep-num{min-width:36px;height:36px;border-radius:8px;background:var(--bg2);display:flex;align-items:center;justify-content:center;font-size:.8rem;font-weight:700;color:var(--text2);}
-.detail-ep-info{flex:1;}
-.detail-ep-name{font-size:.85rem;font-weight:600;}
-.detail-ep-dur{font-size:.72rem;color:var(--text3);margin-top:2px;}
-.detail-ep-play{color:var(--red);opacity:0;transition:var(--tr);}
-.detail-ep-item:hover .detail-ep-play{opacity:1;}
+/* Episodios en cuadritos — grid fluido DramaBox style */
+.detail-episodes{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(48px,1fr));
+  gap:8px;
+  max-height:350px;
+  overflow-y:auto;
+  padding-right:4px;
+}
+.detail-episodes::-webkit-scrollbar{width:4px;}
+.detail-episodes::-webkit-scrollbar-thumb{background:var(--red);border-radius:2px;}
+.detail-ep-item{
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  padding:8px 4px;background:var(--bg3);border-radius:6px;
+  cursor:pointer;transition:transform 0.15s ease, background 0.15s ease;
+  border:1px solid rgba(255,255,255,0.05);
+  text-align:center;min-height:50px;
+}
+.detail-ep-item:hover{background:rgba(229,9,20,.12);transform:scale(1.05);border-color:var(--red);}
+.detail-ep-item.active-ep{border-color:var(--red);background:rgba(229,9,20,.2);}
+.detail-ep-item.visto{border-color:rgba(255,215,0,.4);background:rgba(255,215,0,.06);opacity:0.8;}
+.detail-ep-num{font-size:1rem;font-weight:700;color:var(--text);line-height:1;}
+.detail-ep-info{display:none;}
+.detail-ep-dur{font-size:.6rem;color:var(--gold);margin-top:2px;}
+.detail-ep-play{display:none;}
+
 .server-btns{display:flex;gap:8px;flex-wrap:wrap;}
 .server-btn{padding:8px 16px;border-radius:var(--r);border:2px solid var(--border);background:var(--bg3);color:var(--text2);font-size:.82rem;font-weight:700;transition:var(--tr);cursor:pointer;}
 .server-btn:hover,.server-btn.active{border-color:var(--red);background:rgba(229,9,20,.12);color:var(--text);}
+
 /* PLAYER */
 #page-player{background:var(--bg);padding-top:60px;}
 .player-layout{display:flex;gap:0;min-height:calc(100vh - 60px);}
@@ -200,18 +218,23 @@ button{cursor:pointer;border:none;background:none;font-family:inherit;}
 .btn-share-wa{display:flex;align-items:center;gap:6px;padding:8px 14px;border-radius:50px;background:#25D366;color:#fff;font-size:.82rem;font-weight:700;transition:var(--tr);}
 .btn-share-wa:hover{background:#1da851;}
 .player-sinopsis{padding:0 16px 20px;font-size:.88rem;color:var(--text2);line-height:1.7;background:var(--bg2);margin:0 0 2px;}
-/* SIDEBAR */
-.player-sidebar{width:320px;background:var(--bg2);border-left:1px solid var(--border);display:flex;flex-direction:column;overflow:hidden;}
-.sidebar-title{padding:16px;border-bottom:1px solid var(--border);font-weight:800;font-size:.95rem;}
-.episodes-list{overflow-y:auto;flex:1;}
-.ep-item{display:flex;align-items:center;gap:12px;padding:12px 16px;border-bottom:1px solid rgba(255,255,255,.04);cursor:pointer;transition:var(--tr);}
-.ep-item:hover{background:var(--bg3);}
-.ep-item.active{background:rgba(229,9,20,.12);border-left:3px solid var(--red);}
-.ep-num-box{min-width:34px;height:34px;border-radius:7px;background:var(--bg3);display:flex;align-items:center;justify-content:center;font-size:.75rem;font-weight:700;color:var(--text2);}
-.ep-item.active .ep-num-box{background:var(--red);color:#fff;}
-.ep-info-col{flex:1;overflow:hidden;}
-.ep-name{font-size:.82rem;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.ep-dur{font-size:.7rem;color:var(--text3);margin-top:2px;}
+/* SIDEBAR — cuadritos de episodios */
+.player-sidebar{width:300px;background:var(--bg2);border-left:1px solid var(--border);display:flex;flex-direction:column;overflow:hidden;}
+.sidebar-title{padding:14px 16px;border-bottom:1px solid var(--border);font-weight:800;font-size:.95rem;display:flex;align-items:center;gap:6px;}
+.episodes-list{overflow-y:auto;flex:1;padding:12px;}
+.episodes-list::-webkit-scrollbar{width:4px;}
+.episodes-list::-webkit-scrollbar-thumb{background:var(--red);border-radius:2px;}
+.sidebar-ep-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(44px,1fr));gap:6px;}
+.sidebar-ep-cell{
+  display:flex;align-items:center;justify-content:center;
+  height:42px;border-radius:8px;background:var(--bg3);
+  font-size:.82rem;font-weight:700;cursor:pointer;
+  border:2px solid transparent;transition:var(--tr);color:var(--text2);
+}
+.sidebar-ep-cell:hover{border-color:var(--red);color:var(--text);transform:scale(1.08);}
+.sidebar-ep-cell.active{border-color:var(--red);background:rgba(229,9,20,.25);color:#fff;}
+.sidebar-ep-cell.visto{border-color:rgba(255,215,0,.35);color:var(--gold);}
+
 /* NEXT EP COUNTDOWN */
 .next-ep-countdown{position:fixed;bottom:24px;right:24px;z-index:300;background:rgba(22,22,31,.96);border:1px solid var(--red);border-radius:16px;padding:16px 20px;display:flex;align-items:center;gap:16px;box-shadow:var(--shadow),var(--glow);animation:slideUp .4s ease;}
 .next-ep-info{display:flex;flex-direction:column;gap:2px;}

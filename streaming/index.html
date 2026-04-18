@@ -116,6 +116,8 @@
     <button class="filter-btn" onclick="filtrar('anime',this)">🎌 Anime</button>
     <button class="filter-btn" onclick="filtrar('dorama',this)">🏯 Doramas</button>
     <button class="filter-btn" onclick="filtrar('pelicula',this)">🎬 Películas</button>
+    <button class="filter-btn filter-btn-sport" onclick="filtrar('deporte',this)">⚽ Deportes</button>
+    <button class="filter-btn filter-btn-music" onclick="filtrar('musica',this)">🎵 Música</button>
     <button class="filter-btn" onclick="filtrar('dormir',this)">💤 Para Dormir</button>
     <button class="filter-btn" onclick="filtrar('superacion',this)">💪 Superación</button>
   </div>
@@ -197,6 +199,24 @@
         <a href="#" class="see-all" onclick="filtrar('dormir',null);return false;">Ver todo →</a>
       </div>
       <div class="cards-row" id="grid-dormir"></div>
+    </div>
+
+    <!-- Deportes -->
+    <div class="section-row" id="sec-deportes">
+      <div class="section-header">
+        <span class="section-title">⚽ Deportes en Vivo — Mundial 2026</span>
+        <a href="#" class="see-all" onclick="filtrar('deporte',null);return false;">Ver todo →</a>
+      </div>
+      <div class="cards-row" id="grid-deportes"></div>
+    </div>
+
+    <!-- Música -->
+    <div class="section-row" id="sec-musica">
+      <div class="section-header">
+        <span class="section-title">🎵 Música Latina — Top Hits</span>
+        <a href="#" class="see-all" onclick="filtrar('musica',null);return false;">Ver todo →</a>
+      </div>
+      <div class="cards-row" id="grid-musica"></div>
     </div>
 
     <!-- Superación -->
@@ -359,6 +379,21 @@
 
 <!-- HLS.js -->
 <script src="https://cdn.jsdelivr.net/npm/hls.js@1.5.7/dist/hls.min.js"></script>
+
+<!-- Music Player Bar -->
+<div class="music-bar" id="music-bar" style="display:none">
+  <img class="music-bar-thumb" id="music-bar-thumb" src="" alt="">
+  <div class="music-bar-info">
+    <div class="music-bar-title" id="music-bar-title">—</div>
+    <div class="music-bar-artist" id="music-bar-artist">Charly Stream Music</div>
+  </div>
+  <div class="music-bar-controls">
+    <button class="music-ctrl-btn" onclick="musicPrev()" title="Anterior">⏮</button>
+    <button class="music-ctrl-btn music-play-btn" id="music-play-btn" onclick="musicPlayPause()" title="Play/Pause">⏸</button>
+    <button class="music-ctrl-btn" onclick="musicNext()" title="Siguiente">⏭</button>
+    <button class="music-ctrl-btn" onclick="musicClose()" title="Cerrar">✕</button>
+  </div>
+</div>
 <script src="datos.js"></script>
 <script src="app.js"></script>
 </body>

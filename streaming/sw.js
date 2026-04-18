@@ -1,7 +1,7 @@
 // ============================================================
 // CHARLY STREAM v2.1 — Service Worker
 // ============================================================
-const CACHE_NAME = 'charly-stream-v2.1';
+const CACHE_NAME = 'charly-stream-v2.2';
 const STATIC_ASSETS = [
   '/streaming/',
   '/streaming/index.html',

@@ -12,6 +12,8 @@ let STATE = {
   catalogoAnime: [],
   catalogoDoramas: [],
   catalogoPeliculas: [],
+  catalogoDeportes: [],
+  catalogoMusica: [],
   heroItems: [],
   heroIndex: 0,
   heroTimer: null,
@@ -19,6 +21,8 @@ let STATE = {
   countdownSec: 10,
   todosLosItems: [],
   favoritosView: false,
+  musicaIndex: 0,
+  musicaPlaying: false,
 };
 
 /* ─────────────────────────────────────────
@@ -235,10 +239,18 @@ function generarEpisodiosVacios(n) {
    CONSTRUIR LISTA TOTAL
 ───────────────────────────────────────── */
 function construirTodosLosItems() {
+  STATE.catalogoDeportes = DEPORTES_DATA || [];
+  STATE.catalogoMusica = (MUSICA_PLAYLIST || []).map(m => ({
+    ...m, tipo: 'musica', estado: 'Disponible', rating: 9.0, sinopsis: m.artista,
+    banner: m.poster, episodios: [],
+    servidores: [{nombre: 'YouTube', url: `https://www.youtube.com/embed/${m.yt_id}?autoplay=1`, tipo: 'iframe'}]
+  }));
   STATE.todosLosItems = [
     ...STATE.catalogoAnime,
     ...STATE.catalogoDoramas,
     ...STATE.catalogoPeliculas,
+    ...STATE.catalogoDeportes,
+    ...STATE.catalogoMusica,
     ...(STATE.catalogoDormir || []),
     ...(STATE.catalogoSuperacion || []),
   ];
@@ -260,6 +272,8 @@ function renderCatalogo() {
   renderRow('grid-peliculas', STATE.catalogoPeliculas);
   renderRow('grid-dormir', STATE.catalogoDormir || []);
   renderRow('grid-superacion', STATE.catalogoSuperacion || []);
+  renderRow('grid-deportes', STATE.catalogoDeportes);
+  renderRow('grid-musica', STATE.catalogoMusica);
   STATE.heroItems = top10.slice(0,3);
   renderContinuar();
 }
@@ -755,16 +769,19 @@ function filtrar(tipo, btn) {
   }
   document.getElementById('search-results').style.display = 'none';
   document.getElementById('search-input').value = '';
+  const todas = ['sec-continuar','sec-top10','sec-anime','sec-doramas','sec-peliculas','sec-dormir','sec-superacion','sec-deportes','sec-musica','sec-tiktok'];
   const map = {
-    todo: ['sec-continuar','sec-top10','sec-anime','sec-doramas','sec-peliculas','sec-dormir','sec-superacion'],
-    anime: ['sec-anime'], dorama: ['sec-doramas'], pelicula: ['sec-peliculas'],
-    dormir: ['sec-dormir'], superacion: ['sec-superacion'],
+    todo: todas,
+    anime: ['sec-anime'],
+    dorama: ['sec-doramas'],
+    pelicula: ['sec-peliculas'],
+    dormir: ['sec-dormir'],
+    superacion: ['sec-superacion'],
+    deporte: ['sec-deportes'],
+    musica: ['sec-musica'],
   };
-  const todas = ['sec-continuar','sec-top10','sec-anime','sec-doramas','sec-peliculas','sec-dormir','sec-superacion'];
-  todas.forEach(s => {
-    const el = document.getElementById(s);
-    if (el) el.style.display = (map[tipo]||todas).includes(s) ? 'block' : 'none';
-  });
+  const show = map[tipo] || todas;
+  todas.forEach(s => { const el = document.getElementById(s); if (el) el.style.display = show.includes(s) ? 'block' : 'none'; });
 }
 
 /* ─────────────────────────────────────────
@@ -1022,4 +1039,115 @@ function trackVisit() {
       .catch(() => {});
   }
 }
+
+/* ─────────────────────────────────────────
+   REPRODUCTOR DE MÚSICA
+───────────────────────────────────────── */
+function musicPlay(index) {
+  const lista = STATE.catalogoMusica;
+  if (!lista || index < 0 || index >= lista.length) return;
+  STATE.musicaIndex = index;
+  STATE.musicaPlaying = true;
+  const song = lista[index];
+  // Actualizar barra
+  const bar = document.getElementById('music-bar');
+  if (bar) bar.style.display = 'flex';
+  const el = id => document.getElementById(id);
+  if (el('music-bar-title'))  el('music-bar-title').textContent  = song.titulo;
+  if (el('music-bar-artist')) el('music-bar-artist').textContent = song.artista || '';
+  if (el('music-bar-thumb'))  el('music-bar-thumb').src = song.poster || '';
+  if (el('music-play-btn'))   el('music-play-btn').textContent = '⏸';
+  // Reproducir en player principal
+  reproducirEpisodio(song, 0, 0);
+}
+
+function musicPlayPause() {
+  STATE.musicaPlaying = !STATE.musicaPlaying;
+  const btn = document.getElementById('music-play-btn');
+  if (btn) btn.textContent = STATE.musicaPlaying ? '⏸' : '▶';
+  // Controlar iframe de YouTube es limitado, solo toggling UI
+  mostrarToast(STATE.musicaPlaying ? '▶ Reproduciendo' : '⏸ Pausado', 1500);
+}
+
+function musicNext() {
+  const next = (STATE.musicaIndex + 1) % (STATE.catalogoMusica?.length || 1);
+  musicPlay(next);
+}
+
+function musicPrev() {
+  const prev = STATE.musicaIndex > 0 ? STATE.musicaIndex - 1 : (STATE.catalogoMusica?.length || 1) - 1;
+  musicPlay(prev);
+}
+
+function musicClose() {
+  STATE.musicaPlaying = false;
+  const bar = document.getElementById('music-bar');
+  if (bar) bar.style.display = 'none';
+  limpiarPlayer();
+}
+
+// Cuando se abre un item de música, activar la barra
+const _abrirDetalleOrig = abrirDetalle;
+function abrirDetalle(id) {
+  _abrirDetalleOrig(id);
+  const item = getItemById(id);
+  if (item?.tipo === 'musica') {
+    const idx = STATE.catalogoMusica?.findIndex(m => m.id === id) ?? -1;
+    if (idx >= 0) { STATE.musicaIndex = idx; STATE.musicaPlaying = true; }
+  }
+}
+
+/* ─────────────────────────────────────────
+   MEMORIA DE REPRODUCCIÓN (Resume)
+───────────────────────────────────────── */
+function saveProgress(itemId, epIndex, seconds) {
+  try {
+    const prog = JSON.parse(localStorage.getItem('cs_resume') || '{}');
+    prog[`${itemId}_${epIndex}`] = { t: Math.floor(seconds), saved: Date.now() };
+    localStorage.setItem('cs_resume', JSON.stringify(prog));
+  } catch(e) {}
+}
+
+function getResumeTime(itemId, epIndex) {
+  try {
+    const prog = JSON.parse(localStorage.getItem('cs_resume') || '{}');
+    const entry = prog[`${itemId}_${epIndex}`];
+    if (!entry) return 0;
+    // Solo resumir si fue en los últimos 30 días
+    if (Date.now() - entry.saved > 30 * 86400000) return 0;
+    return entry.t || 0;
+  } catch(e) { return 0; }
+}
+
+// Hook al video nativo HLS para guardar progreso cada 5 segundos
+document.addEventListener('DOMContentLoaded', () => {
+  const vid = document.getElementById('player-video');
+  if (!vid) return;
+  let saveInterval = null;
+  vid.addEventListener('play', () => {
+    saveInterval = setInterval(() => {
+      if (!STATE.contenidoActual || vid.paused) return;
+      saveProgress(STATE.contenidoActual.id, STATE.episodioActual, vid.currentTime);
+      // Actualizar barra de progreso en la card
+      const duracion = vid.duration || 1;
+      const pct = Math.round((vid.currentTime / duracion) * 100);
+      if (STATE.contenidoActual.id) {
+        const prog = JSON.parse(localStorage.getItem('cs_progress') || '{}');
+        prog[STATE.contenidoActual.id] = pct;
+        localStorage.setItem('cs_progress', JSON.stringify(prog));
+      }
+    }, 5000);
+  });
+  vid.addEventListener('pause', () => clearInterval(saveInterval));
+  vid.addEventListener('ended', () => { clearInterval(saveInterval); reproducirSiguienteEpisodio(); });
+  // Restaurar posición al cargar
+  vid.addEventListener('loadedmetadata', () => {
+    if (!STATE.contenidoActual) return;
+    const t = getResumeTime(STATE.contenidoActual.id, STATE.episodioActual);
+    if (t > 10) {
+      vid.currentTime = t;
+      mostrarToast(`▶ Continuando desde ${Math.floor(t/60)}:${String(Math.floor(t%60)).padStart(2,'0')}`, 3000);
+    }
+  });
+});
 

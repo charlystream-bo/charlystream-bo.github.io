@@ -2,10 +2,16 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CHARLY STREAM — Anime & Doramas en Español</title>
-  <meta name="description" content="Mira anime y doramas chinos con audio en español. Charly Stream — tu plataforma de streaming en Bolivia.">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>CHARLY STREAM - Anime and Doramas en Espanol</title>
+  <meta name="description" content="Mira anime y doramas chinos with audio en espanol. La mejor plataforma de streaming gratuita de Bolivia.">
   <meta name="theme-color" content="#e50914">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta property="og:title" content="CHARLY STREAM">
+  <meta property="og:description" content="Anime and Doramas en Espanol - Bolivia">
+  <meta property="og:image" content="icons/icon-512.png">
   <link rel="manifest" href="manifest.json">
   <link rel="icon" href="icons/icon-192.png">
   <link rel="apple-touch-icon" href="icons/icon-192.png">
@@ -15,246 +21,113 @@
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-
-<!-- ══════════════════════════════
-     PAGE 1: LOGIN
-══════════════════════════════ -->
 <div id="page-login" class="page active">
-  <div class="login-bg-particles" id="particles"></div>
+  <div class="login-particles" id="particles"></div>
   <div class="login-box">
     <div class="login-logo">
-      <span class="logo-icon">🎌</span>
+      <img src="icons/icon-192.png" alt="Charly Stream" class="login-img-logo" onerror="this.style.display='none'">
+      <span class="login-icon-fallback">STREAM</span>
     </div>
     <h1 class="login-title">CHARLY STREAM</h1>
-    <p class="login-subtitle">Anime &amp; Doramas en Español 🇧🇴</p>
-
-    <div class="login-features">
-      <span class="feat-badge">🎬 Anime</span>
-      <span class="feat-badge">🏯 Doramas Chinos</span>
-      <span class="feat-badge">🎤 Audio Latino</span>
+    <p class="login-subtitle">Anime and Doramas en Espanol (Bolivia)</p>
+    <div class="login-badges">
+      <span class="badge">Anime</span>
+      <span class="badge">Doramas</span>
+      <span class="badge">Audio Latino</span>
+      <span class="badge">PWA</span>
     </div>
-
     <div class="login-form">
-      <label class="form-label" for="input-codigo">Ingresa tu código de acceso</label>
-      <div class="form-input-wrap">
-        <input
-          id="input-codigo"
-          class="form-input"
-          type="text"
-          placeholder="Ej: CHARLY001"
-          maxlength="20"
-          autocomplete="off"
-          autocapitalize="characters"
-        >
-        <span class="form-input-icon">🔑</span>
+      <label class="form-label" for="input-codigo">Codigo de acceso</label>
+      <div class="form-wrap">
+        <input id="input-codigo" class="form-input" type="text" placeholder="Ej: CHARLY001" maxlength="20" autocomplete="off" autocapitalize="characters">
+        <span class="form-icon">KEY</span>
       </div>
-      <p class="form-error" id="form-error">❌ Código incorrecto o expirado. Contacta a Charly.</p>
-      <button class="btn-primary" id="btn-ingresar" onclick="ingresarConCodigo()">
-        <span>▶ ENTRAR A CHARLY STREAM</span>
-      </button>
-
-      <div class="divider">o</div>
-
-      <button class="btn-trial" id="btn-prueba" onclick="mostrarPrueba()">
-        🎁 Quiero mis 7 Días GRATIS
-      </button>
+      <p class="form-error" id="form-error">X Codigo incorrecto. Contacta a Charly.</p>
+      <button class="btn-primary" id="btn-ingresar" onclick="ingresarConCodigo()"><span>&gt; ENTRAR GRATIS</span></button>
+      <div class="divider"><span>o</span></div>
+      <button class="btn-trial" onclick="mostrarPrueba()">GIFT Quiero 7 Dias GRATIS</button>
     </div>
-
     <div class="login-footer">
-      <p>¿Ya tienes acceso? ¿Quieres renovar por <strong>5 Bs</strong>?</p>
-      <a id="btn-wa-login" href="https://wa.me/59165657865?text=Hola%20Charly%2C%20quiero%20acceso%20a%20Charly%20Stream%20%F0%9F%8E%8C" class="btn-wa" target="_blank">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.625.846 5.059 2.284 7.034L.789 23.492a.5.5 0 00.612.638l4.769-1.416A11.94 11.94 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-2.239 0-4.308-.724-5.993-1.953l-.42-.305-2.834.841.89-2.722-.334-.444A9.96 9.96 0 012 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/></svg>
-        Contactar a Charly (WhatsApp)
-      </a>
+      <p>Quieres renovar por <strong>5 Bs</strong>?</p>
+      <a href="https://wa.me/59165657865?text=Hola%20Charly%2C%20quiero%20acceso%20a%20Charly%20Stream" class="btn-wa" target="_blank">WhatsApp Charly</a>
     </div>
-    <p style="margin-top:20px;font-size:0.7rem;color:var(--text3);">v1.0 Beta • Hecho con ❤️ en Bolivia 🇧🇴</p>
+    <p class="login-version">v2.0 - Hecho con <3 en Bolivia</p>
   </div>
 </div>
-
-<!-- ══════════════════════════════
-     PAGE 2: CATÁLOGO
-══════════════════════════════ -->
 <div id="page-catalog" class="page">
-
-  <!-- Navbar -->
-  <nav class="navbar">
-    <a href="#" class="nav-logo" onclick="irACatalogo()">
-      <span class="nav-logo-icon">🎌</span>
+  <nav class="navbar" id="navbar">
+    <a href="#" class="nav-logo" onclick="irACatalogo(); return false;">
+      <span class="nav-logo-icon">STREAM</span>
       <span class="nav-logo-text">CHARLY STREAM</span>
     </a>
-    <div class="nav-search">
-      <span class="nav-search-icon">🔍</span>
+    <div class="nav-search-wrap">
+      <span class="nav-search-icon">SEARCH</span>
       <input id="search-input" type="text" placeholder="Buscar anime, dorama..." oninput="buscar(this.value)">
     </div>
-    <div class="nav-actions">
-      <span id="nav-dias" class="nav-btn" style="pointer-events:none;"></span>
-      <button class="nav-btn-exit" onclick="cerrarSesion()">Salir</button>
-      <div class="nav-avatar">👤</div>
+    <div class="nav-right">
+      <span id="nav-dias" class="nav-dias"></span>
+      <button class="nav-fav-btn" onclick="toggleFavoritesView()" title="Mis Favoritos">&lt;3</button>
+      <button class="nav-exit-btn" onclick="cerrarSesion()">Salir</button>
     </div>
   </nav>
-
-  <!-- Hero Banner -->
-  <div class="hero-banner" id="hero-banner">
-    <img id="hero-img" class="hero-img" src="" alt="Destacado">
-    <div class="hero-overlay"></div>
-    <div class="hero-content">
-      <div class="hero-badge">🔥 DESTACADO</div>
-      <h1 class="hero-title" id="hero-title"></h1>
-      <div class="hero-meta">
-        <span class="hero-rating" id="hero-rating"></span>
-        <span id="hero-year"></span>
-        <span id="hero-audio"></span>
-        <span id="hero-status"></span>
-      </div>
-      <p class="hero-desc" id="hero-desc"></p>
-      <div class="hero-btns">
-        <button class="btn-play" id="hero-play" onclick="reproducirDestacado()">
-          ▶ Ver Ahora
-        </button>
-        <button class="btn-info" id="hero-info" onclick="verInfo()">
-          ℹ️ Más Info
-        </button>
-      </div>
+  <div class="hero-section" id="hero-section">
+    <div class="hero-slider" id="hero-slider">
+      <div class="hero-slide active" id="hero-slide-0"><div class="hero-bg" id="hero-bg-0"></div><div class="hero-overlay"></div><div class="hero-content" id="hero-content-0"></div></div>
+      <div class="hero-slide" id="hero-slide-1"><div class="hero-bg" id="hero-bg-1"></div><div class="hero-overlay"></div><div class="hero-content" id="hero-content-1"></div></div>
+      <div class="hero-slide" id="hero-slide-2"><div class="hero-bg" id="hero-bg-2"></div><div class="hero-overlay"></div><div class="hero-content" id="hero-content-2"></div></div>
     </div>
+    <div class="hero-dots" id="hero-dots"></div>
   </div>
-
-  <!-- Filtros -->
   <div class="filters-bar">
     <button class="filter-btn active" onclick="filtrar('todo',this)">Todo</button>
-    <button class="filter-btn" onclick="filtrar('anime',this)">🎌 Anime</button>
-    <button class="filter-btn" onclick="filtrar('dorama',this)">🏯 Doramas</button>
-    <button class="filter-btn" onclick="filtrar('pelicula',this)">🎬 Películas</button>
-    <button class="filter-btn" onclick="filtrar('latino',this)">🎤 Audio Latino</button>
-    <button class="filter-btn" onclick="filtrar('subs',this)">💬 Subtítulos</button>
+    <button class="filter-btn" onclick="filtrar('anime',this)">Anime</button>
+    <button class="filter-btn" onclick="filtrar('dorama',this)">Doramas</button>
+    <button class="filter-btn" onclick="filtrar('pelicula',this)">Peliculas</button>
+    <button class="filter-btn" onclick="filtrar('dormir',this)">Para Dormir</button>
+    <button class="filter-btn" onclick="filtrar('superacion',this)">Superacion</button>
   </div>
-
-  <!-- Contenido Principal -->
-  <main class="catalog-main">
-
-    <!-- Resultados de búsqueda -->
-    <div class="search-results" id="search-results" style="display:none;">
-      <p class="search-results-title">Resultados para: <span id="search-term"></span></p>
-      <div class="cards-grid" id="search-grid"></div>
-    </div>
-
-    <!-- Continuar Viendo -->
-    <div class="section-row" id="section-continuar" style="display:none;">
-      <div class="section-row-header">
-        <span class="section-row-title">▶ Continuar Viendo</span>
-      </div>
-      <div class="cards-row" id="grid-continuar"></div>
-    </div>
-
-    <!-- Anime -->
-    <div class="section-row" id="section-anime">
-      <div class="section-row-header">
-        <span class="section-row-title">🎌 Anime Explosivo</span>
-        <a href="#" class="section-see-all" onclick="filtrar('anime')">Ver todo →</a>
-      </div>
-      <div class="cards-row" id="grid-anime"></div>
-    </div>
-
-    <!-- Doramas -->
-    <div class="section-row" id="section-doramas">
-      <div class="section-row-header">
-        <span class="section-row-title">🏯 Doramas Chinos</span>
-        <a href="#" class="section-see-all" onclick="filtrar('dorama')">Ver todo →</a>
-      </div>
-      <div class="cards-row" id="grid-doramas"></div>
-    </div>
-
-    <!-- Películas -->
-    <div class="section-row" id="section-peliculas">
-      <div class="section-row-header">
-        <span class="section-row-title">🎬 Películas</span>
-        <a href="#" class="section-see-all" onclick="filtrar('pelicula')">Ver todo →</a>
-      </div>
-      <div class="cards-row" id="grid-peliculas"></div>
-    </div>
-
+  <div class="loading-state" id="loading-state"><div class="spinner"></div><p>Cargando contenido...</p></div>
+  <main class="catalog-main" id="catalog-main" style="display:none">
+    <div id="search-results" style="display:none"><div class="section-header"><span class="section-title">SEARCH Resultados: <span id="search-term" style="color:var(--red)"></span></span></div><div class="cards-grid" id="search-grid"></div></div>
+    <div id="fav-section" style="display:none"><div class="section-header"><span class="section-title">&lt;3 Mis Favoritos</span><a href="#" class="see-all" onclick="toggleFavoritesView();return false;">&lt;- Volver</a></div><div class="cards-grid" id="fav-grid"></div><p id="fav-empty" style="display:none;color:var(--text3);padding:20px;">Aun no tienes favoritos.</p></div>
+    <div class="section-row" id="sec-continuar" style="display:none"><div class="section-header"><span class="section-title">&gt; Continuar Viendo</span></div><div class="cards-row" id="grid-continuar"></div></div>
+    <div class="section-row" id="sec-top10"><div class="section-header"><span class="section-title">TOP Top 10 Esta Semana</span></div><div class="cards-row top10-row" id="grid-top10"></div></div>
+    <div class="section-row" id="sec-anime"><div class="section-header"><span class="section-title">Anime Anime Explosivo</span><a href="#" class="see-all" onclick="filtrar('anime',null);return false;">Ver todo -&gt;</a></div><div class="cards-row" id="grid-anime"></div></div>
+    <div class="section-row" id="sec-doramas"><div class="section-header"><span class="section-title">Dorama Doramas Chinos</span><a href="#" class="see-all" onclick="filtrar('dorama',null);return false;">Ver todo -&gt;</a></div><div class="cards-row" id="grid-doramas"></div></div>
+    <div class="section-row" id="sec-peliculas"><div class="section-header"><span class="section-title">Peliculas</span><a href="#" class="see-all" onclick="filtrar('pelicula',null);return false;">Ver todo -&gt;</a></div><div class="cards-row" id="grid-peliculas"></div></div>
+    <div class="section-row" id="sec-dormir"><div class="section-header"><span class="section-title">Para Dormir</span><a href="#" class="see-all" onclick="filtrar('dormir',null);return false;">Ver todo -&gt;</a></div><div class="cards-row" id="grid-dormir"></div></div>
+    <div class="section-row" id="sec-superacion"><div class="section-header"><span class="section-title">Mensajes de Superacion</span><a href="#" class="see-all" onclick="filtrar('superacion',null);return false;">Ver todo -&gt;</a></div><div class="cards-row" id="grid-superacion"></div></div>
   </main>
+  <div class="modal-overlay" id="modal-detail" style="display:none" onclick="cerrarDetalle(event)">
+    <div class="modal-detail-box" id="modal-detail-box">
+      <button class="modal-close" onclick="cerrarDetalle()">X</button>
+      <div class="detail-hero"><img id="detail-banner" src="" alt="" class="detail-banner-img"><div class="detail-hero-overlay"></div><div class="detail-hero-content"><div id="detail-badge" class="detail-type-badge"></div><h2 id="detail-title" class="detail-title"></h2><div class="detail-meta" id="detail-meta"></div><div class="detail-btns"><button class="btn-play-detail" id="detail-play-btn" onclick="reproducirDesdeDetalle()">&gt; Reproducir</button><button class="btn-fav-detail" id="detail-fav-btn" onclick="toggleFavorito()">&lt;3 Favorito</button></div></div></div>
+      <div class="detail-body"><p id="detail-sinopsis" class="detail-sinopsis"></p><div class="detail-tags" id="detail-tags"></div><div id="detail-episodes-wrap" class="detail-episodes-wrap"><h3 class="detail-ep-title">List Episodios</h3><div class="detail-episodes" id="detail-episodes"></div></div><div id="detail-servers-wrap" style="display:none"><h3 class="detail-ep-title">Server Servidores</h3><div class="server-btns" id="detail-servers"></div></div></div>
+    </div>
+  </div>
 </div>
-
-<!-- ══════════════════════════════
-     PAGE 3: REPRODUCTOR
-══════════════════════════════ -->
 <div id="page-player" class="page">
-
-  <nav class="navbar">
-    <a href="#" class="nav-logo" onclick="irACatalogo()">
-      <span class="nav-logo-icon">🎌</span>
-      <span class="nav-logo-text">CHARLY STREAM</span>
-    </a>
-    <div class="nav-actions">
-      <button class="btn-back" onclick="irACatalogo()">← Volver al catálogo</button>
-    </div>
-  </nav>
-
+  <nav class="navbar navbar-player"><a href="#" class="nav-logo" onclick="irACatalogo(); return false;"><span class="nav-logo-icon">STREAM</span><span class="nav-logo-text">CHARLY STREAM</span></a><button class="btn-back-catalog" onclick="irACatalogo()">&lt;- Catalogo</button></nav>
   <div class="player-layout">
-    <!-- Video -->
     <div class="player-main">
-      <div class="player-video-wrap">
-        <iframe
-          id="player-iframe"
-          class="player-iframe"
-          src=""
-          allow="autoplay; fullscreen; picture-in-picture"
-          allowfullscreen
-          title="Reproductor Charly Stream"
-        ></iframe>
+      <div class="player-wrap" id="player-wrap">
+        <video id="player-video" class="player-video" controls playsinline style="display:none"></video>
+        <div class="iframe-loading" id="iframe-loading"><div class="spinner"></div><p>Cargando servidor...</p></div>
+        <iframe id="player-iframe" class="player-iframe" src="about:blank" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>
+        <div class="server-error" id="server-error" style="display:none"><div>:(</div><p>Este servidor no esta disponible.</p><button onclick="intentarSiguienteServidor()">Intentar Servidor Siguiente -&gt;</button></div>
       </div>
-      <div class="player-info">
-        <h2 class="player-title" id="player-show-title"></h2>
-        <p class="player-ep-info" id="player-ep-info"></p>
-        <div class="player-actions">
-          <a id="btn-download-ep" href="#" class="btn-download" target="_blank">
-            ⬇️ Descargar Episodio
-          </a>
-          <button class="btn-next-ep" id="btn-next-ep" onclick="siguienteEpisodio()">
-            Siguiente Episodio →
-          </button>
-        </div>
-        <div class="player-desc" id="player-desc"></div>
-      </div>
+      <div class="player-controls-bar"><div class="server-selector" id="server-selector"><span class="server-label">Server Servidor:</span><div class="server-btns-row" id="server-btns-row"></div></div><div class="player-ep-nav"><button class="btn-prev-ep" id="btn-prev-ep" onclick="cambiarEpisodio(-1)">&lt;- Anterior</button><button class="btn-next-ep" id="btn-next-ep" onclick="cambiarEpisodio(1)">Siguiente -&gt;</button></div></div>
+      <div class="player-info-bar"><div><h2 class="player-show-title" id="player-show-title"></h2><p class="player-ep-label" id="player-ep-label"></p></div><div class="player-info-actions"><button class="btn-fav-player" id="btn-fav-player" onclick="toggleFavorito()">&lt;3</button><a id="btn-wa-share" href="#" class="btn-share-wa" target="_blank">Share Compartir</a></div></div>
+      <div class="player-sinopsis" id="player-sinopsis"></div>
     </div>
-
-    <!-- Sidebar -->
-    <div class="player-sidebar">
-      <div class="sidebar-header">📋 Episodios</div>
-      <div class="episodes-list" id="episodes-list"></div>
-    </div>
+    <div class="player-sidebar" id="player-sidebar"><div class="sidebar-title">List Episodios</div><div class="episodes-list" id="episodes-list"></div></div>
   </div>
+  <div class="next-ep-countdown" id="next-ep-countdown" style="display:none"><div class="next-ep-info"><span>Siguiente episodio en</span><strong id="countdown-num">10</strong></div><div class="next-ep-actions"><button onclick="cancelarCountdown()">Cancelar</button><button class="btn-next-now" onclick="reproducirSiguienteEpisodio()">&gt; Reproducir Ahora</button></div></div>
 </div>
-
-<!-- ══════════════════════════════
-     MODAL: ACCESO EXPIRADO
-══════════════════════════════ -->
-<div class="modal-overlay" id="modal-expiry" style="display:none;">
-  <div class="modal-box">
-    <div class="modal-icon">⏰</div>
-    <h2 class="modal-title">¡Tu acceso expiró!</h2>
-    <p class="modal-desc">Tu prueba de 7 días ha terminado.<br>Renueva tu acceso por solo:</p>
-    <div class="modal-price">5 Bs / mes</div>
-    <a href="https://wa.me/59165657865?text=Hola%20Charly%2C%20quiero%20renovar%20mi%20acceso%20a%20Charly%20Stream%20%F0%9F%8E%8C%20-%205%20Bs%20Yape" class="btn-wa" target="_blank" style="display:inline-flex;margin-bottom:16px;">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.625.846 5.059 2.284 7.034L.789 23.492a.5.5 0 00.612.638l4.769-1.416A11.94 11.94 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-2.239 0-4.308-.724-5.993-1.953l-.42-.305-2.834.841.89-2.722-.334-.444A9.96 9.96 0 012 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/></svg>
-      Pagar 5 Bs por Yape / WhatsApp
-    </a>
-    <br>
-    <button onclick="cerrarSesion()" style="color:var(--text3);font-size:0.85rem;background:none;border:none;cursor:pointer;font-family:inherit;">
-      Cerrar sesión
-    </button>
-  </div>
-</div>
-
-<!-- Toast -->
+<div class="modal-overlay" id="modal-expiry" style="display:none"><div class="modal-box"><div class="modal-icon">Time</div><h2 class="modal-title">Tu acceso expiro!</h2><p class="modal-desc">Renueva tu acceso por solo:</p><div class="modal-price">5 Bs / mes</div><a href="https://wa.me/59165657865?text=Hola%20Charly%2C%20quiero%20renovar%20mi%20acceso%20a%20Charly%20Stream%20-%205%20Bs" class="btn-wa" target="_blank">Pagar 5 Bs - WhatsApp</a><br><br><button onclick="cerrarSesion()" class="btn-logout-modal">Cerrar sesion</button></div></div>
 <div class="toast" id="toast"></div>
-
-<!-- Floating WhatsApp -->
-<a href="https://wa.me/59165657865" class="floating-wa" id="floating-wa" target="_blank" aria-label="WhatsApp Charly">
-  <svg width="28" height="28" viewBox="0 0 24 24" fill="#fff"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.625.846 5.059 2.284 7.034L.789 23.492a.5.5 0 00.612.638l4.769-1.416A11.94 11.94 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-2.239 0-4.308-.724-5.993-1.953l-.42-.305-2.834.841.89-2.722-.334-.444A9.96 9.96 0 012 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/></svg>
-  <span class="wa-pulse"></span>
-</a>
-
+<a href="https://wa.me/59165657865" class="wa-float" target="_blank" aria-label="WhatsApp"><svg width="26" height="26" viewBox="0 0 24 24" fill="#fff"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.625.846 5.059 2.284 7.034L.789 23.492a.5.5 0 00.612.638l4.769-1.416A11.94 11.94 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-2.239 0-4.308-.724-5.993-1.953l-.42-.305-2.834.841.89-2.722-.334-.444A9.96 9.96 0 012 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/></svg><span class="wa-pulse"></span></a>
+<script src="https://cdn.jsdelivr.net/npm/hls.js@1.5.7/dist/hls.min.js"></script>
 <script src="datos.js"></script>
 <script src="app.js"></script>
 </body>

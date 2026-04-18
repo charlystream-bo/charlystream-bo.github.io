@@ -303,24 +303,25 @@ function renderContinuar() {
 function crearCardHTML(item, top10Num) {
   if (!item) return '';
   const audioClass = item.audio?.toLowerCase().includes('latino') ? 'latino' : 'subs';
-  const audioLabel = item.audio?.toLowerCase().includes('latino') ? '🎤 Latino' : '💬 Subs';
+  const audioLabel = item.tipo === 'musica' ? '🎵 Música'
+    : item.tipo === 'deporte' ? '⚽ Deporte'
+    : item.audio?.toLowerCase().includes('latino') ? '🎤 Latino' : '💬 Subs';
   const isFav = esFavorito(item.id);
   const prog = getProgreso(item.id);
   const progHTML = prog > 0 ? `<div class="card-progress"><div class="card-progress-bar" style="width:${prog}%"></div></div>` : '';
   const top10HTML = top10Num ? `<div class="top10-num">${top10Num}</div>` : '';
-  const isNew = item.estado === 'En Emisión';
-  const newBadge = isNew ? '<span class="card-badge-new">EN VIVO</span>' : '';
+  const isLive = item.estado === 'En Vivo';
+  const isNew  = item.estado === 'En Emisión';
+  const badge  = isLive ? '<span class="card-live-badge">🔴 EN VIVO</span>'
+    : isNew ? '<span class="card-badge-new">NUEVO</span>' : '';
+  const playIcon = item.tipo === 'musica' ? '🎵' : item.tipo === 'deporte' ? '⚽' : '▶';
   return `
 <div class="card" onclick="abrirDetalle('${item.id}')" id="card-${item.id}">
-  ${top10HTML}${newBadge}
+  ${top10HTML}${badge}
   <img class="card-poster" src="${item.poster}" alt="${item.titulo}" loading="lazy"
-    onerror="this.src='https://via.placeholder.com/400x600/1a1a24/e50914?text=${encodeURIComponent(item.titulo?.substring(0,15)||'')}'">
-  <div class="card-overlay">
-    <div class="card-play">▶</div>
-  </div>
-  <button class="card-fav ${isFav?'active':''}" onclick="toggleFavoritoCard(event,'${item.id}')" title="Favorito">
-    ${isFav?'❤️':'🤍'}
-  </button>
+    onerror="this.src='https://via.placeholder.com/400x600/1a1a24/e50914?text=${encodeURIComponent(item.titulo?.substring(0,15)||'')}' ">
+  <div class="card-overlay"><div class="card-play">${playIcon}</div></div>
+  <button class="card-fav ${isFav?'active':''}" onclick="toggleFavoritoCard(event,'${item.id}')" title="Favorito">${isFav?'❤️':'🤍'}</button>
   ${progHTML}
   <div class="card-info">
     <div class="card-title">${item.titulo || 'Sin título'}</div>
@@ -416,19 +417,24 @@ function abrirDetalle(id) {
   document.body.style.overflow = 'hidden';
   // Banner
   document.getElementById('detail-banner').src = item.banner || item.poster;
-  // Badge
-  const badges = {anime:'🎌 Anime', dorama:'🏯 Dorama', pelicula:'🎬 Película', dormir:'💤 Para Dormir', superacion:'💪 Superación'};
+  // Badge con todos los tipos
+  const badges = {
+    anime:'🎌 Anime', dorama:'🏯 Dorama', pelicula:'🎬 Película',
+    dormir:'💤 Para Dormir', superacion:'💪 Superación',
+    deporte:'⚽ Deportes', musica:'🎵 Música'
+  };
   document.getElementById('detail-badge').textContent = badges[item.tipo] || '';
   document.getElementById('detail-title').textContent = item.titulo;
   document.getElementById('detail-meta').innerHTML = `
     <span>⭐ ${item.rating}</span><span>${item.año}</span>
-    <span>${item.audio}</span><span>${item.estado}</span>
+    <span>${item.audio || ''}</span><span>${item.estado}</span>
     ${item.totalEpisodios ? `<span>${item.totalEpisodios} ep.</span>` : ''}
-    ${item.duracion ? `<span>${item.duracion}</span>` : ''}`;
+    ${item.duracion ? `<span>${item.duracion}</span>` : ''}
+    ${item.artista ? `<span>🎤 ${item.artista}</span>` : ''}`;
   document.getElementById('detail-sinopsis').textContent = item.sinopsis;
   // Tags
   document.getElementById('detail-tags').innerHTML = (item.generos||[]).map(g => `<span class="detail-tag">${g}</span>`).join('');
-  // Botón favorito
+  // Favorito
   const favBtn = document.getElementById('detail-fav-btn');
   favBtn.classList.toggle('active', esFavorito(item.id));
   favBtn.textContent = esFavorito(item.id) ? '❤️ En Favoritos' : '🤍 Favorito';
@@ -448,6 +454,21 @@ function abrirDetalle(id) {
   } else {
     epWrap.style.display = 'none';
     srvWrap.style.display = 'none';
+  }
+  // Activar barra de música si es canción
+  if (item.tipo === 'musica') {
+    const idx = STATE.catalogoMusica?.findIndex(m => m.id === id) ?? -1;
+    if (idx >= 0) {
+      STATE.musicaIndex = idx;
+      STATE.musicaPlaying = true;
+      const bar = document.getElementById('music-bar');
+      if (bar) bar.style.display = 'flex';
+      const el = i => document.getElementById(i);
+      if (el('music-bar-title'))  el('music-bar-title').textContent  = item.titulo;
+      if (el('music-bar-artist')) el('music-bar-artist').textContent = item.artista || '';
+      if (el('music-bar-thumb'))  el('music-bar-thumb').src = item.poster || '';
+      if (el('music-play-btn'))   el('music-play-btn').textContent = '⏸';
+    }
   }
 }
 
@@ -1086,16 +1107,8 @@ function musicClose() {
   limpiarPlayer();
 }
 
-// Cuando se abre un item de música, activar la barra
-const _abrirDetalleOrig = abrirDetalle;
-function abrirDetalle(id) {
-  _abrirDetalleOrig(id);
-  const item = getItemById(id);
-  if (item?.tipo === 'musica') {
-    const idx = STATE.catalogoMusica?.findIndex(m => m.id === id) ?? -1;
-    if (idx >= 0) { STATE.musicaIndex = idx; STATE.musicaPlaying = true; }
-  }
-}
+// Cuando se abre un item de música, la barra ya se activa dentro de abrirDetalle
+// (Este bloque reemplaza el override roto que causaba bucle infinito)
 
 /* ─────────────────────────────────────────
    MEMORIA DE REPRODUCCIÓN (Resume)

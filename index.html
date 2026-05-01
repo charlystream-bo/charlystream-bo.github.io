@@ -1,134 +1,491 @@
-<!DOCTYPE html>
+!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <title>CHARLY STREAM - Anime and Doramas en Espanol</title>
-  <meta name="description" content="Mira anime y doramas chinos with audio en espanol. La mejor plataforma de streaming gratuita de Bolivia.">
-  <meta name="theme-color" content="#e50914">
-  <meta name="mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <meta property="og:title" content="CHARLY STREAM">
-  <meta property="og:description" content="Anime and Doramas en Espanol - Bolivia">
-  <meta property="og:image" content="icons/icon-512.png">
-  <link rel="manifest" href="manifest.json">
-  <link rel="icon" href="icons/icon-192.png">
-  <link rel="apple-touch-icon" href="icons/icon-192.png">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Charly Stream — Panel de Control</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&display=swap');
+  *{margin:0;padding:0;box-sizing:border-box}
+  :root{
+    --gold:#d4af37;--gold2:#f0d060;
+    --bg:#080612;--card:#100c20;--card2:#14102a;
+    --border:#2a1f50;--text:#c8c0e0;--dim:#6a6090;
+    --green:#22c55e;--red:#ef4444;--purple:#7c3aed;
+  }
+  body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;padding:20px}
+  body::before{
+    content:'';position:fixed;inset:0;
+    background:radial-gradient(ellipse 80% 50% at 50% 0%,#1a0a3a 0%,transparent 70%);
+    pointer-events:none;z-index:0
+  }
+  .wrap{max-width:900px;margin:0 auto;position:relative;z-index:1}
+
+  /* Header */
+  .header{text-align:center;padding:32px 0 24px}
+  .crown{font-size:40px;animation:pulse 2s ease-in-out infinite}
+  @keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.1)}}
+  h1{font-size:28px;font-weight:900;background:linear-gradient(135deg,var(--gold),var(--gold2),#fff);
+     -webkit-background-clip:text;-webkit-text-fill-color:transparent;margin:8px 0 4px}
+  .subtitle{color:var(--dim);font-size:13px;letter-spacing:1px;text-transform:uppercase}
+
+  /* Status Bar */
+  .status-bar{display:flex;gap:12px;margin-bottom:24px;flex-wrap:wrap}
+  .stat{flex:1;min-width:150px;background:var(--card);border:1px solid var(--border);
+        border-radius:12px;padding:16px;text-align:center}
+  .stat-n{font-size:28px;font-weight:900;color:var(--gold)}
+  .stat-l{font-size:11px;color:var(--dim);text-transform:uppercase;letter-spacing:1px;margin-top:4px}
+  .dot{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:6px}
+  .dot.green{background:var(--green);box-shadow:0 0 8px var(--green)}
+  .dot.red{background:var(--red)}
+
+  /* Auth */
+  .auth-gate{background:var(--card);border:1px solid var(--border);border-radius:16px;
+             padding:32px;text-align:center;max-width:400px;margin:80px auto}
+  .auth-gate h2{color:var(--gold);margin-bottom:20px;font-size:18px}
+
+  /* Cards */
+  .card{background:var(--card);border:1px solid var(--border);border-radius:16px;
+        padding:24px;margin-bottom:20px}
+  .card-title{font-size:14px;font-weight:700;color:var(--gold);text-transform:uppercase;
+               letter-spacing:1px;margin-bottom:20px;display:flex;align-items:center;gap:8px}
+
+  /* Form */
+  .form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px}
+  @media(max-width:600px){.form-row{grid-template-columns:1fr}}
+  label{font-size:12px;color:var(--dim);display:block;margin-bottom:6px;text-transform:uppercase;letter-spacing:.5px}
+  input,select{width:100%;background:#0a0818;border:1px solid var(--border);border-radius:8px;
+               padding:10px 14px;color:var(--text);font-size:14px;font-family:'Inter',sans-serif;
+               outline:none;transition:border .2s}
+  input:focus,select:focus{border-color:var(--gold)}
+  select option{background:#100c20}
+
+  /* Buttons */
+  .btn{padding:11px 22px;border-radius:8px;font-weight:700;font-size:13px;cursor:pointer;
+       border:none;transition:all .2s;font-family:'Inter',sans-serif;letter-spacing:.5px}
+  .btn-gold{background:linear-gradient(135deg,var(--gold),#b8960a);color:#000}
+  .btn-gold:hover{transform:translateY(-1px);box-shadow:0 4px 20px rgba(212,175,55,.4)}
+  .btn-red{background:rgba(239,68,68,.15);color:var(--red);border:1px solid var(--red)}
+  .btn-red:hover{background:rgba(239,68,68,.25)}
+  .btn-sm{padding:7px 14px;font-size:12px}
+  .btn:disabled{opacity:.4;cursor:not-allowed;transform:none}
+
+  /* Table */
+  table{width:100%;border-collapse:collapse}
+  th{text-align:left;font-size:11px;color:var(--dim);text-transform:uppercase;letter-spacing:1px;
+     padding:8px 12px;border-bottom:1px solid var(--border)}
+  td{padding:12px;border-bottom:1px solid #1a1535;font-size:13px;vertical-align:middle}
+  tr:last-child td{border-bottom:none}
+  tr:hover td{background:rgba(255,255,255,.02)}
+  .badge{display:inline-block;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:700}
+  .badge-ok{background:rgba(34,197,94,.15);color:var(--green);border:1px solid rgba(34,197,94,.3)}
+  .badge-exp{background:rgba(239,68,68,.15);color:var(--red);border:1px solid rgba(239,68,68,.3)}
+  .badge-perm{background:rgba(212,175,55,.15);color:var(--gold);border:1px solid rgba(212,175,55,.3)}
+
+  /* Alert */
+  .alert{padding:12px 16px;border-radius:8px;font-size:13px;margin-bottom:16px;display:none}
+  .alert.ok{background:rgba(34,197,94,.1);border:1px solid rgba(34,197,94,.3);color:var(--green)}
+  .alert.err{background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.3);color:var(--red)}
+
+  /* Live feed */
+  .feed{max-height:220px;overflow-y:auto;font-size:12px;font-family:monospace}
+  .feed::-webkit-scrollbar{width:4px}
+  .feed::-webkit-scrollbar-track{background:#0a0818}
+  .feed::-webkit-scrollbar-thumb{background:var(--border);border-radius:4px}
+  .feed-row{padding:6px 8px;border-bottom:1px solid #1a1535;display:flex;gap:12px;align-items:center}
+  .feed-cash{color:var(--green);font-weight:700;min-width:90px}
+  .feed-cash.prem{color:var(--gold)}
+  .feed-name{color:var(--text);flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .feed-ch{color:var(--dim);min-width:40px}
+
+  /* Loader */
+  .spinner{width:20px;height:20px;border:2px solid var(--border);border-top-color:var(--gold);
+           border-radius:50%;animation:spin .6s linear infinite;display:inline-block}
+  @keyframes spin{to{transform:rotate(360deg)}}
+
+  .loader-code{background:#0a0818;border:1px solid var(--border);border-radius:8px;
+               padding:16px;font-family:monospace;font-size:12px;color:#a0ffa0;
+               white-space:pre-wrap;word-break:break-all;max-height:120px;overflow-y:auto}
+
+  /* Empty state */
+  .empty{text-align:center;padding:40px;color:var(--dim)}
+  .hidden{display:none!important}
+</style>
 </head>
 <body>
-<div id="page-login" class="page active">
-  <div class="login-particles" id="particles"></div>
-  <div class="login-box">
-    <div class="login-logo">
-      <img src="icons/icon-192.png" alt="Charly Stream" class="login-img-logo" onerror="this.style.display='none'">
-      <span class="login-icon-fallback">STREAM</span>
+
+<!-- AUTH GATE -->
+<div id="authGate" class="auth-gate">
+  <div style="font-size:48px;margin-bottom:12px">👑</div>
+  <h2>Charly Stream — Admin</h2>
+  <p style="color:var(--dim);font-size:13px;margin-bottom:24px">Ingresa la contraseña del panel</p>
+  <input id="pwdInput" type="password" placeholder="Contraseña..." style="margin-bottom:12px"
+         onkeydown="if(event.key==='Enter')login()">
+  <br>
+  <button class="btn btn-gold" onclick="login()" style="width:100%;margin-top:4px">ENTRAR</button>
+  <p id="authErr" style="color:var(--red);font-size:12px;margin-top:12px;display:none">Contraseña incorrecta</p>
+</div>
+
+<!-- MAIN PANEL -->
+<div id="mainPanel" class="wrap hidden">
+
+  <div class="header">
+    <div class="crown">👑</div>
+    <h1>CHARLY STREAM — PANEL</h1>
+    <p class="subtitle">El Señor de la Noche · Gestión de Licencias</p>
+  </div>
+
+  <!-- Stats -->
+  <div class="status-bar" id="statsBar">
+    <div class="stat">
+      <div class="stat-n" id="sTotal">—</div>
+      <div class="stat-l">Usuarios Activos</div>
     </div>
-    <h1 class="login-title">CHARLY STREAM</h1>
-    <p class="login-subtitle">Anime and Doramas en Espanol (Bolivia)</p>
-    <div class="login-badges">
-      <span class="badge">Anime</span>
-      <span class="badge">Doramas</span>
-      <span class="badge">Audio Latino</span>
-      <span class="badge">PWA</span>
+    <div class="stat">
+      <div class="stat-n" id="sHits">—</div>
+      <div class="stat-l">HITs Detectados</div>
     </div>
-    <div class="login-form">
-      <label class="form-label" for="input-codigo">Codigo de acceso</label>
-      <div class="form-wrap">
-        <input id="input-codigo" class="form-input" type="text" placeholder="Ej: CHARLY001" maxlength="20" autocomplete="off" autocapitalize="characters">
-        <span class="form-icon">KEY</span>
+    <div class="stat">
+      <div class="stat-n" id="sUptime">—</div>
+      <div class="stat-l">Uptime (h)</div>
+    </div>
+    <div class="stat">
+      <div class="stat-n" style="font-size:14px">
+        <span class="dot" id="srvDot"></span><span id="srvStatus">—</span>
       </div>
-      <p class="form-error" id="form-error">X Codigo incorrecto. Contacta a Charly.</p>
-      <button class="btn-primary" id="btn-ingresar" onclick="ingresarConCodigo()"><span>&gt; ENTRAR GRATIS</span></button>
-      <div class="divider"><span>o</span></div>
-      <button class="btn-trial" onclick="mostrarPrueba()">GIFT Quiero 7 Dias GRATIS</button>
-    </div>
-    <div class="login-footer">
-      <p>Quieres renovar por <strong>5 Bs</strong>?</p>
-      <a href="https://wa.me/59165657865?text=Hola%20Charly%2C%20quiero%20acceso%20a%20Charly%20Stream" class="btn-wa" target="_blank">WhatsApp Charly</a>
-    </div>
-    <p class="login-version">v2.0 - Hecho con <3 en Bolivia</p>
-  </div>
-</div>
-<div id="page-catalog" class="page">
-  <nav class="navbar" id="navbar">
-    <a href="#" class="nav-logo" onclick="irACatalogo(); return false;">
-      <span class="nav-logo-icon">STREAM</span>
-      <span class="nav-logo-text">CHARLY STREAM</span>
-    </a>
-    <div class="nav-search-wrap">
-      <span class="nav-search-icon">SEARCH</span>
-      <input id="search-input" type="text" placeholder="Buscar anime, dorama..." oninput="buscar(this.value)">
-    </div>
-    <div class="nav-right">
-      <span id="nav-dias" class="nav-dias"></span>
-      <button class="nav-fav-btn" onclick="toggleFavoritesView()" title="Mis Favoritos">&lt;3</button>
-      <button class="nav-exit-btn" onclick="cerrarSesion()">Salir</button>
-    </div>
-  </nav>
-  <div class="hero-section" id="hero-section">
-    <div class="hero-slider" id="hero-slider">
-      <div class="hero-slide active" id="hero-slide-0"><div class="hero-bg" id="hero-bg-0"></div><div class="hero-overlay"></div><div class="hero-content" id="hero-content-0"></div></div>
-      <div class="hero-slide" id="hero-slide-1"><div class="hero-bg" id="hero-bg-1"></div><div class="hero-overlay"></div><div class="hero-content" id="hero-content-1"></div></div>
-      <div class="hero-slide" id="hero-slide-2"><div class="hero-bg" id="hero-bg-2"></div><div class="hero-overlay"></div><div class="hero-content" id="hero-content-2"></div></div>
-    </div>
-    <div class="hero-dots" id="hero-dots"></div>
-  </div>
-  <div class="filters-bar">
-    <button class="filter-btn active" onclick="filtrar('todo',this)">Todo</button>
-    <button class="filter-btn" onclick="filtrar('anime',this)">Anime</button>
-    <button class="filter-btn" onclick="filtrar('dorama',this)">Doramas</button>
-    <button class="filter-btn" onclick="filtrar('pelicula',this)">Peliculas</button>
-    <button class="filter-btn" onclick="filtrar('dormir',this)">Para Dormir</button>
-    <button class="filter-btn" onclick="filtrar('superacion',this)">Superacion</button>
-  </div>
-  <div class="loading-state" id="loading-state"><div class="spinner"></div><p>Cargando contenido...</p></div>
-  <main class="catalog-main" id="catalog-main" style="display:none">
-    <div id="search-results" style="display:none"><div class="section-header"><span class="section-title">SEARCH Resultados: <span id="search-term" style="color:var(--red)"></span></span></div><div class="cards-grid" id="search-grid"></div></div>
-    <div id="fav-section" style="display:none"><div class="section-header"><span class="section-title">&lt;3 Mis Favoritos</span><a href="#" class="see-all" onclick="toggleFavoritesView();return false;">&lt;- Volver</a></div><div class="cards-grid" id="fav-grid"></div><p id="fav-empty" style="display:none;color:var(--text3);padding:20px;">Aun no tienes favoritos.</p></div>
-    <div class="section-row" id="sec-continuar" style="display:none"><div class="section-header"><span class="section-title">&gt; Continuar Viendo</span></div><div class="cards-row" id="grid-continuar"></div></div>
-    <div class="section-row" id="sec-top10"><div class="section-header"><span class="section-title">TOP Top 10 Esta Semana</span></div><div class="cards-row top10-row" id="grid-top10"></div></div>
-    <div class="section-row" id="sec-anime"><div class="section-header"><span class="section-title">Anime Anime Explosivo</span><a href="#" class="see-all" onclick="filtrar('anime',null);return false;">Ver todo -&gt;</a></div><div class="cards-row" id="grid-anime"></div></div>
-    <div class="section-row" id="sec-doramas"><div class="section-header"><span class="section-title">Dorama Doramas Chinos</span><a href="#" class="see-all" onclick="filtrar('dorama',null);return false;">Ver todo -&gt;</a></div><div class="cards-row" id="grid-doramas"></div></div>
-    <div class="section-row" id="sec-peliculas"><div class="section-header"><span class="section-title">Peliculas</span><a href="#" class="see-all" onclick="filtrar('pelicula',null);return false;">Ver todo -&gt;</a></div><div class="cards-row" id="grid-peliculas"></div></div>
-    <div class="section-row" id="sec-dormir"><div class="section-header"><span class="section-title">Para Dormir</span><a href="#" class="see-all" onclick="filtrar('dormir',null);return false;">Ver todo -&gt;</a></div><div class="cards-row" id="grid-dormir"></div></div>
-    <div class="section-row" id="sec-superacion"><div class="section-header"><span class="section-title">Mensajes de Superacion</span><a href="#" class="see-all" onclick="filtrar('superacion',null);return false;">Ver todo -&gt;</a></div><div class="cards-row" id="grid-superacion"></div></div>
-  </main>
-  <div class="modal-overlay" id="modal-detail" style="display:none" onclick="cerrarDetalle(event)">
-    <div class="modal-detail-box" id="modal-detail-box">
-      <button class="modal-close" onclick="cerrarDetalle()">X</button>
-      <div class="detail-hero"><img id="detail-banner" src="" alt="" class="detail-banner-img"><div class="detail-hero-overlay"></div><div class="detail-hero-content"><div id="detail-badge" class="detail-type-badge"></div><h2 id="detail-title" class="detail-title"></h2><div class="detail-meta" id="detail-meta"></div><div class="detail-btns"><button class="btn-play-detail" id="detail-play-btn" onclick="reproducirDesdeDetalle()">&gt; Reproducir</button><button class="btn-fav-detail" id="detail-fav-btn" onclick="toggleFavorito()">&lt;3 Favorito</button></div></div></div>
-      <div class="detail-body"><p id="detail-sinopsis" class="detail-sinopsis"></p><div class="detail-tags" id="detail-tags"></div><div id="detail-episodes-wrap" class="detail-episodes-wrap"><h3 class="detail-ep-title">List Episodios</h3><div class="detail-episodes" id="detail-episodes"></div></div><div id="detail-servers-wrap" style="display:none"><h3 class="detail-ep-title">Server Servidores</h3><div class="server-btns" id="detail-servers"></div></div></div>
+      <div class="stat-l">Servidor</div>
     </div>
   </div>
-</div>
-<div id="page-player" class="page">
-  <nav class="navbar navbar-player"><a href="#" class="nav-logo" onclick="irACatalogo(); return false;"><span class="nav-logo-icon">STREAM</span><span class="nav-logo-text">CHARLY STREAM</span></a><button class="btn-back-catalog" onclick="irACatalogo()">&lt;- Catalogo</button></nav>
-  <div class="player-layout">
-    <div class="player-main">
-      <div class="player-wrap" id="player-wrap">
-        <video id="player-video" class="player-video" controls playsinline style="display:none"></video>
-        <div class="iframe-loading" id="iframe-loading"><div class="spinner"></div><p>Cargando servidor...</p></div>
-        <iframe id="player-iframe" class="player-iframe" src="about:blank" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>
-        <div class="server-error" id="server-error" style="display:none"><div>:(</div><p>Este servidor no esta disponible.</p><button onclick="intentarSiguienteServidor()">Intentar Servidor Siguiente -&gt;</button></div>
+
+  <!-- Add User -->
+  <div class="card">
+    <div class="card-title">➕ Agregar Usuario</div>
+    <div id="addAlert" class="alert"></div>
+    <div class="form-row">
+      <div>
+        <label>Roblox Username</label>
+        <input id="inUser" placeholder="ej: Peluche3332" oninput="clearUID()">
       </div>
-      <div class="player-controls-bar"><div class="server-selector" id="server-selector"><span class="server-label">Server Servidor:</span><div class="server-btns-row" id="server-btns-row"></div></div><div class="player-ep-nav"><button class="btn-prev-ep" id="btn-prev-ep" onclick="cambiarEpisodio(-1)">&lt;- Anterior</button><button class="btn-next-ep" id="btn-next-ep" onclick="cambiarEpisodio(1)">Siguiente -&gt;</button></div></div>
-      <div class="player-info-bar"><div><h2 class="player-show-title" id="player-show-title"></h2><p class="player-ep-label" id="player-ep-label"></p></div><div class="player-info-actions"><button class="btn-fav-player" id="btn-fav-player" onclick="toggleFavorito()">&lt;3</button><a id="btn-wa-share" href="#" class="btn-share-wa" target="_blank">Share Compartir</a></div></div>
-      <div class="player-sinopsis" id="player-sinopsis"></div>
+      <div>
+        <label>Roblox UserID (auto)</label>
+        <input id="inUID" placeholder="Se llena automático" style="color:var(--gold)">
+      </div>
     </div>
-    <div class="player-sidebar" id="player-sidebar"><div class="sidebar-title">List Episodios</div><div class="episodes-list" id="episodes-list"></div></div>
+    <div class="form-row">
+      <div>
+        <label>Nombre / Alias</label>
+        <input id="inName" placeholder="ej: Cliente VIP">
+      </div>
+      <div>
+        <label>Duración de Licencia</label>
+        <select id="inDays">
+          <option value="1">1 día (prueba)</option>
+          <option value="7">7 días</option>
+          <option value="30" selected>30 días</option>
+          <option value="90">90 días</option>
+          <option value="180">6 meses</option>
+          <option value="365">1 año</option>
+          <option value="0">Permanente</option>
+        </select>
+      </div>
+    </div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap">
+      <button class="btn btn-gold" onclick="lookupUser()" id="btnLookup">🔍 Buscar Username</button>
+      <button class="btn btn-gold" onclick="addUser()" id="btnAdd" disabled>✅ Agregar</button>
+    </div>
   </div>
-  <div class="next-ep-countdown" id="next-ep-countdown" style="display:none"><div class="next-ep-info"><span>Siguiente episodio en</span><strong id="countdown-num">10</strong></div><div class="next-ep-actions"><button onclick="cancelarCountdown()">Cancelar</button><button class="btn-next-now" onclick="reproducirSiguienteEpisodio()">&gt; Reproducir Ahora</button></div></div>
+
+  <!-- User List -->
+  <div class="card">
+    <div class="card-title" style="justify-content:space-between">
+      <span>👥 Usuarios Registrados</span>
+      <button class="btn btn-gold btn-sm" onclick="loadUsers()">↻ Actualizar</button>
+    </div>
+    <div id="userAlert" class="alert"></div>
+    <div id="tableWrap">
+      <div class="empty"><div class="spinner"></div><br><br>Cargando...</div>
+    </div>
+  </div>
+
+  <!-- Live Feed -->
+  <div class="card">
+    <div class="card-title" style="justify-content:space-between">
+      <span>⚡ Servidores en Vivo</span>
+      <span id="feedPing" style="font-size:11px;color:var(--dim)"></span>
+    </div>
+    <div class="feed" id="liveFeed">
+      <div class="empty" style="padding:20px">Conectando...</div>
+    </div>
+  </div>
+
+  <!-- Loader Code -->
+  <div class="card">
+    <div class="card-title">📋 Código del Loader (Xeno)</div>
+    <p style="font-size:12px;color:var(--dim);margin-bottom:12px">Comparte este código con tus clientes. El motor se carga directo desde tu servidor.</p>
+    <div class="loader-code" id="loaderCode">-- Cargando...</div>
+    <button class="btn btn-gold btn-sm" onclick="copyLoader()" style="margin-top:12px">📋 Copiar Loader</button>
+  </div>
+
+  <div style="text-align:center;padding:20px;color:var(--dim);font-size:12px">
+    El Señor de la Noche · Servidor: 206.81.14.10 · 
+    <a href="#" onclick="logout()" style="color:var(--gold);text-decoration:none">Cerrar sesión</a>
+  </div>
 </div>
-<div class="modal-overlay" id="modal-expiry" style="display:none"><div class="modal-box"><div class="modal-icon">Time</div><h2 class="modal-title">Tu acceso expiro!</h2><p class="modal-desc">Renueva tu acceso por solo:</p><div class="modal-price">5 Bs / mes</div><a href="https://wa.me/59165657865?text=Hola%20Charly%2C%20quiero%20renovar%20mi%20acceso%20a%20Charly%20Stream%20-%205%20Bs" class="btn-wa" target="_blank">Pagar 5 Bs - WhatsApp</a><br><br><button onclick="cerrarSesion()" class="btn-logout-modal">Cerrar sesion</button></div></div>
-<div class="toast" id="toast"></div>
-<a href="https://wa.me/59165657865" class="wa-float" target="_blank" aria-label="WhatsApp"><svg width="26" height="26" viewBox="0 0 24 24" fill="#fff"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.625.846 5.059 2.284 7.034L.789 23.492a.5.5 0 00.612.638l4.769-1.416A11.94 11.94 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-2.239 0-4.308-.724-5.993-1.953l-.42-.305-2.834.841.89-2.722-.334-.444A9.96 9.96 0 012 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/></svg><span class="wa-pulse"></span></a>
-<script src="https://cdn.jsdelivr.net/npm/hls.js@1.5.7/dist/hls.min.js"></script>
-<script src="datos.js"></script>
-<script src="app.js"></script>
+
+<script>
+const API = 'http://206.81.14.10:5000';
+const PWD = 'tiocharly';
+let _authed = false;
+
+// ── AUTH ──────────────────────────────────────────────────
+function login() {
+  const v = document.getElementById('pwdInput').value;
+  if (v === PWD) {
+    _authed = true;
+    document.getElementById('authGate').classList.add('hidden');
+    document.getElementById('mainPanel').classList.remove('hidden');
+    init();
+  } else {
+    document.getElementById('authErr').style.display = 'block';
+    document.getElementById('pwdInput').style.borderColor = 'var(--red)';
+  }
+}
+function logout() {
+  _authed = false;
+  document.getElementById('authGate').classList.remove('hidden');
+  document.getElementById('mainPanel').classList.add('hidden');
+}
+
+// ── INIT ──────────────────────────────────────────────────
+function init() {
+  loadStats();
+  loadUsers();
+  pollFeed();
+  setLoader();
+  setInterval(loadStats, 10000);
+  setInterval(pollFeed, 3000);
+}
+
+// ── STATS ──────────────────────────────────────────────────
+async function loadStats() {
+  try {
+    const r = await fetch(`${API}/health`);
+    const d = await r.json();
+    document.getElementById('sHits').textContent = d.total_hits?.toLocaleString() || '—';
+    const h = Math.floor((d.uptime||0)/3600);
+    const m = Math.floor(((d.uptime||0)%3600)/60);
+    document.getElementById('sUptime').textContent = `${h}h${m}m`;
+    document.getElementById('srvStatus').textContent = 'Online';
+    document.getElementById('srvDot').className = 'dot green';
+  } catch {
+    document.getElementById('srvStatus').textContent = 'Offline';
+    document.getElementById('srvDot').className = 'dot red';
+  }
+}
+
+// ── USERS ──────────────────────────────────────────────────
+async function loadUsers() {
+  document.getElementById('tableWrap').innerHTML =
+    '<div class="empty"><div class="spinner"></div><br><br>Cargando...</div>';
+  try {
+    const r = await fetch(`${API}/api/wl/list?pwd=${PWD}`);
+    const d = await r.json();
+    const users = d.users || {};
+    const keys = Object.keys(users);
+    document.getElementById('sTotal').textContent = keys.length;
+    if (keys.length === 0) {
+      document.getElementById('tableWrap').innerHTML =
+        '<div class="empty">Sin usuarios registrados aún.</div>';
+      return;
+    }
+    let rows = '';
+    for (const uid of keys) {
+      const u = users[uid];
+      const now = Date.now()/1000;
+      let badge, expTxt;
+      if (!u.expires) {
+        badge = '<span class="badge badge-perm">PERM</span>';
+        expTxt = 'Permanente';
+      } else if (u.expires < now) {
+        badge = '<span class="badge badge-exp">EXPIRADO</span>';
+        expTxt = new Date(u.expires*1000).toLocaleDateString('es');
+      } else {
+        const dLeft = Math.ceil((u.expires-now)/86400);
+        badge = '<span class="badge badge-ok">ACTIVO</span>';
+        expTxt = `${dLeft}d restantes`;
+      }
+      rows += `<tr>
+        <td><span style="color:var(--gold);font-weight:700">${u.name||'—'}</span><br>
+            <span style="color:var(--dim);font-size:11px">UID: ${uid}</span></td>
+        <td>${badge}</td>
+        <td style="color:var(--dim);font-size:12px">${expTxt}</td>
+        <td style="color:var(--dim);font-size:11px">${u.added?new Date(u.added*1000).toLocaleDateString('es'):'—'}</td>
+        <td><button class="btn btn-red btn-sm" onclick="removeUser('${uid}','${u.name||uid}')">🗑 Quitar</button></td>
+      </tr>`;
+    }
+    document.getElementById('tableWrap').innerHTML = `
+      <table>
+        <thead><tr>
+          <th>Usuario</th><th>Estado</th><th>Licencia</th><th>Agregado</th><th></th>
+        </tr></thead>
+        <tbody>${rows}</tbody>
+      </table>`;
+  } catch(e) {
+    document.getElementById('tableWrap').innerHTML =
+      `<div class="empty" style="color:var(--red)">Error conectando al servidor.</div>`;
+  }
+}
+
+// ── ADD USER ──────────────────────────────────────────────
+function clearUID() {
+  document.getElementById('inUID').value = '';
+  document.getElementById('btnAdd').disabled = true;
+}
+
+async function lookupUser() {
+  const uname = document.getElementById('inUser').value.trim();
+  if (!uname) return;
+  const btn = document.getElementById('btnLookup');
+  btn.disabled = true; btn.innerHTML = '<div class="spinner"></div>';
+  try {
+    const r = await fetch('https://users.roblox.com/v1/usernames/users', {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({usernames:[uname],excludeBannedUsers:false})
+    });
+    const d = await r.json();
+    if (d.data && d.data.length > 0) {
+      const uid = d.data[0].id;
+      document.getElementById('inUID').value = uid;
+      document.getElementById('inName').value = document.getElementById('inName').value || uname;
+      document.getElementById('btnAdd').disabled = false;
+      showAlert('addAlert','ok',`✅ Encontrado: ${d.data[0].displayName} (UID: ${uid})`);
+    } else {
+      showAlert('addAlert','err','❌ Usuario no encontrado en Roblox');
+    }
+  } catch {
+    showAlert('addAlert','err','❌ Error buscando usuario');
+  }
+  btn.disabled = false; btn.innerHTML = '🔍 Buscar Username';
+}
+
+async function addUser() {
+  const uid = document.getElementById('inUID').value.trim();
+  const name = document.getElementById('inName').value.trim() || uid;
+  const days = parseInt(document.getElementById('inDays').value);
+  if (!uid) return;
+  const btn = document.getElementById('btnAdd');
+  btn.disabled = true; btn.innerHTML = '<div class="spinner"></div>';
+  try {
+    const r = await fetch(`${API}/api/wl/add`, {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({uid, name, days, pwd: PWD})
+    });
+    const d = await r.json();
+    if (d.ok) {
+      showAlert('addAlert','ok',`✅ ${name} agregado exitosamente`);
+      document.getElementById('inUser').value='';
+      document.getElementById('inUID').value='';
+      document.getElementById('inName').value='';
+      btn.disabled = true;
+      loadUsers();
+    } else {
+      showAlert('addAlert','err','❌ Error: '+d.msg);
+    }
+  } catch {
+    showAlert('addAlert','err','❌ Error conectando al servidor');
+  }
+  btn.innerHTML = '✅ Agregar';
+}
+
+async function removeUser(uid, name) {
+  if (!confirm(`¿Quitar a ${name} (${uid}) de la whitelist?`)) return;
+  try {
+    const r = await fetch(`${API}/api/wl/remove`, {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({uid, pwd: PWD})
+    });
+    const d = await r.json();
+    if (d.ok) {
+      showAlert('userAlert','ok',`✅ ${name} eliminado`);
+      loadUsers();
+    } else {
+      showAlert('userAlert','err','❌ Error al eliminar');
+    }
+  } catch {
+    showAlert('userAlert','err','❌ Error de conexión');
+  }
+}
+
+// ── LIVE FEED ──────────────────────────────────────────────
+async function pollFeed() {
+  const t0 = performance.now();
+  try {
+    const r = await fetch(`${API}/senor_job.json?t=${Date.now()}`);
+    const d = await r.json();
+    const ping = Math.round(performance.now()-t0);
+    document.getElementById('feedPing').textContent = `${ping}ms`;
+    const servers = d.servers || [];
+    if (servers.length === 0) {
+      document.getElementById('liveFeed').innerHTML =
+        '<div class="empty" style="padding:20px">Esperando servidores...</div>';
+      return;
+    }
+    let html = '';
+    for (const sv of servers.slice(0,12)) {
+      const isPrem = (sv.cash_m||0) >= 20;
+      html += `<div class="feed-row">
+        <span class="feed-cash ${isPrem?'prem':''}">${sv.cash||'?'}</span>
+        <span class="feed-name">${sv.name||'Server'}</span>
+        <span class="feed-ch">${sv.ch||'?'}</span>
+        ${isPrem?'<span style="color:#d4af37;font-size:10px">★ 20M+</span>':''}
+      </div>`;
+    }
+    document.getElementById('liveFeed').innerHTML = html;
+  } catch {
+    document.getElementById('feedPing').textContent = 'offline';
+  }
+}
+
+// ── LOADER CODE ──────────────────────────────────────────
+function setLoader() {
+  const code = `-- El Señor de la Noche | Loader
+local API = "http://206.81.14.10:5000"
+local _r = (type(request)=="function" and request)
+    or (type(syn)=="table" and syn.request)
+    or (type(http_request)=="function" and http_request)
+    or (type(http)=="table" and http.request) or request
+local uid = tostring(game:GetService("Players").LocalPlayer.UserId)
+local ok,res = pcall(_r,{Url=API.."/api/auth?uid="..uid,Method="GET"})
+if not ok or not res or res.StatusCode~=200 then warn("[LOADER] Sin acceso"); return end
+local auth = game:GetService("HttpService"):JSONDecode(res.Body)
+if not auth or not auth.ok then warn("[LOADER] "..(auth and auth.msg or "No autorizado")); return end
+local ok2,res2 = pcall(_r,{Url=API.."/api/engine?uid="..uid.."&key="..auth.key,Method="GET"})
+if not ok2 or not res2 or res2.StatusCode~=200 then warn("[LOADER] Error cargando motor"); return end
+local fn,err = loadstring(res2.Body)
+if fn then fn() else warn("[LOADER] "..tostring(err)) end`;
+  document.getElementById('loaderCode').textContent = code;
+}
+
+function copyLoader() {
+  const code = document.getElementById('loaderCode').textContent;
+  navigator.clipboard.writeText(code).then(()=>{
+    const btn = event.target;
+    btn.textContent = '✅ Copiado!';
+    setTimeout(()=>btn.textContent='📋 Copiar Loader', 2000);
+  });
+}
+
+// ── UTILS ──────────────────────────────────────────────────
+function showAlert(id, type, msg) {
+  const el = document.getElementById(id);
+  el.className = `alert ${type}`;
+  el.textContent = msg;
+  el.style.display = 'block';
+  setTimeout(()=>el.style.display='none', 4000);
+}
+</script>
 </body>
 </html>
